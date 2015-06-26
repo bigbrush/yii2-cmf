@@ -1,0 +1,22 @@
+{
+    "name": "bigbrush/yii2-cmf",
+    "type": "yii2-extension",
+    "description": "CMF for Yii 2",
+    "keywords": ["yii2", "cmf"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "BIG Brush Agency ApS",
+            "email": "mj@bigbrush-agency.com"
+        }
+    ],
+    "require": {
+        "bigbrush/yii2-big": "dev-master",
+        "yiisoft/yii2-swiftmailer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "bigbrush\\cms\\": "src"
+        }
+    }
+}
