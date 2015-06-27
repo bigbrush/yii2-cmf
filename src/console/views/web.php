@@ -37,7 +37,7 @@ $config = [
             'enableDynamicContent' => true,
             'managers' => [
                 'urlManager' => [
-                    'enableUrlRule' => true,
+                    'enableUrlRules' => true,
                 ],
                 'menuManager' => [
                     'autoload' => true,
