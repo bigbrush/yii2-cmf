@@ -21,15 +21,15 @@ class PageController extends Controller
     /**
      * Shows a single page.
      *
-     * @param int $id the id of a page.
+     * @param string $alias a page alias (slug).
      * @return string the rendering result of this action.
      * @throws InvalidParamException if a model with the provided id is not found. 
      */
-    public function actionShow($id)
+    public function actionShow($alias)
     {
-        $model = Page::find()->where(['id' => $id])->byState(Page::STATE_ACTIVE)->one();
+        $model = Page::find()->where(['alias' => $alias])->byState(Page::STATE_ACTIVE)->one();
         if (!$model) {
-            throw new NotFoundHttpException("Page with id '$id' not found.");
+            throw new NotFoundHttpException("Page not found.");
         }
         Yii::$app->big->setTemplate($model->template_id);
         $model->content = Editor::process($model->content);

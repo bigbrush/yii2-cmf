@@ -25,11 +25,13 @@ class CategoryController extends Controller
      */
     public function actionPages($catid)
     {
+        $category = Yii::$app->big->categoryManager->getItem($catid);
         $pages = Page::find()->byCategory($catid)->byState(Page::STATE_ACTIVE)->orderBy('created_at')->all();
         foreach ($pages as $page) {
             $page->content = Editor::process($page->content);
         }
         return $this->render('pages', [
+            'category' => $category,
             'pages' => $pages,
         ]);
     }

@@ -8,7 +8,6 @@
 namespace bigbrush\cms\models;
 
 use Yii;
-use yii\helpers\Json;
 use bigbrush\big\models\Menu;
 
 /**
@@ -20,6 +19,7 @@ class AdminMenu extends Menu
      * @var string the icon to use with the menu.
      */
     public $icon;
+
 
     /**
      * @inheritdoc
@@ -52,24 +52,9 @@ class AdminMenu extends Menu
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->params = Json::encode([
-                'icon' => $this->icon,
-            ]);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function afterFind()
     {
         parent::afterFind();
-        $params = Json::decode($this->params);
-        $this->icon = $params['icon'];
+        $this->icon = $this->params['icon'];
     }
 }
