@@ -9,11 +9,11 @@ use yii\helpers\Html;
 use bigbrush\cms\modules\pages\components\Route;
 
 $params = $category->params;
-$chunks = array_chunk($pages, $params['items_in_row']);
-$class = 'col-md-' . 12 / $params['items_in_row'];
-$dateDisplayed = $params['show_date'] ? $params['show_date'] : false;
+$chunks = array_chunk($pages, $params['pages_pr_row']);
+$class = 'col-md-' . 12 / $params['pages_pr_row'];
+$dateDisplayed = $params['show_page_dates'] ? $params['show_page_dates'] : false;
 ?>
-<?php if ($category->params['show_title']) : ?>
+<?php if ($category->params['show_category_title']) : ?>
 	<h1><?= $category->title ?></h1>
 <?php endif; ?>
 
@@ -29,7 +29,7 @@ $dateDisplayed = $params['show_date'] ? $params['show_date'] : false;
 
         <?= Html::a(Html::encode($page->title), Route::page($page, '/')) ?>
         
-        <?php if ($category->params['show_content']) : ?>
+        <?php if ($category->params['show_page_content']) : ?>
         <?= $page->content ?>
         <?php endif; ?>
     </div>
