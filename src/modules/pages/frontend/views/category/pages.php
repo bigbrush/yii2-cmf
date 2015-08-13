@@ -8,6 +8,12 @@
 use yii\helpers\Html;
 use bigbrush\cms\modules\pages\components\Route;
 
+$this->title = (!empty($category->meta_title) ? $category->meta_title : $category->title);
+$this->registerMetaTag(['name' => 'description', 'content' => $category->meta_description]);
+if (!empty($category->meta_keywords)) {
+    $this->registerMetaTag(['name' => 'keywords', 'content' => $category->meta_keywords]);
+}
+
 $params = $category->params;
 $chunks = array_chunk($pages, $params['pages_pr_row']);
 $class = 'col-md-' . 12 / $params['pages_pr_row'];

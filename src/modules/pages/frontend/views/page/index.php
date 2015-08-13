@@ -9,7 +9,9 @@ use yii\helpers\Html;
 
 $this->title = (!empty($model->meta_title) ? $model->meta_title : $model->title);
 $this->registerMetaTag(['name' => 'description', 'content' => $model->meta_description]);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $model->meta_keywords]);
+if (!empty($category->meta_keywords)) {
+    $this->registerMetaTag(['name' => 'keywords', 'content' => $category->meta_keywords]);
+}
 ?>
 <div class="row">
     <div class="col-md-12">

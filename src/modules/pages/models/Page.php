@@ -166,7 +166,7 @@ class Page extends ActiveRecord
             ['content', 'filter', 'filter' => '\yii\helpers\HtmlPurifier::process'],
             ['state', 'default', 'value' => self::STATE_ACTIVE],
             ['state', 'in', 'range' => array_keys($this->getStateOptions())],
-            [['meta_title', 'meta_description', 'meta_keywords'], 'string', 'max' => 255],
+            [['meta_title', 'meta_description', 'meta_keywords', 'alias'], 'string', 'max' => 255],
             ['template_id', 'integer'],
         ];
     }
@@ -183,6 +183,7 @@ class Page extends ActiveRecord
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'slugAttribute' => 'alias',
+                'immutable' => true,
             ],
         ];
     }

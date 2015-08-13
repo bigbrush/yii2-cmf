@@ -8,7 +8,7 @@
 use bigbrush\cms\widgets\Editor;
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
                 <?= $form->field($model, 'title', ['inputOptions' => ['class'  =>'form-control input-lg']]) ?>
@@ -26,12 +26,5 @@ use bigbrush\cms\widgets\Editor;
         
         <?= $form->field($model, 'content')->widget(Editor::className()) ?>
 
-    </div>
-    <div class="col-md-3">
-        <h3><?= Yii::t('cms', 'Category SEO') ?></h3>
-        <?= $form->field($model, 'meta_title') ?>
-        <?= $form->field($model, 'meta_description')->textArea() ?>
-        <?= $form->field($model, 'alias') ?>
-        <?= $form->field($model, 'meta_keywords') ?>
     </div>
 </div>
