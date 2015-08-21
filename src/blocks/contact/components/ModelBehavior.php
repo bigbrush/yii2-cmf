@@ -114,6 +114,7 @@ class ModelBehavior extends Behavior
     {
         $this->owner->content = Json::encode([            
             'receiver' => $this->receiver,
+            'successMessage' => $this->successMessage,
             'redirectTo' => $this->redirectTo,
             'fields' => $this->fields,
         ]);

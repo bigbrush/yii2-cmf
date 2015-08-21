@@ -48,6 +48,7 @@ class Block extends \bigbrush\big\core\Block
                     return Yii::$app->controller->refresh();
                 } else {
                     $url = Yii::$app->big->urlManager->parseInternalUrl($this->model->redirectTo);
+                    $url = Yii::$app->getUrlManager()->createUrl($url);
                     return Yii::$app->controller->redirect($url);
                 }
             } else {

@@ -54,6 +54,6 @@ if ($model->getIsNewRecord() === false) {
                 'items' => $items,
             ]) ?>
         </div>
-    </div>    
+    </div>
 
 <?php $form = ActiveForm::end(); ?>
