@@ -37,7 +37,6 @@ class AdminMenu extends Menu
     /**
      * Returns menu items for the admin menu.
      *
-     * @param boolean $useIcons indicates whether to show an icon before each menu item.
      * @return array configuration for menu items.
      */
     public function getItems()
@@ -109,12 +108,17 @@ class AdminMenu extends Menu
     /**
      * Checks whether a menu item is active.
      * This is true when the module/controller part of the current route matches module/controller part of the provided item.
+     * Implemented to activate correct menu when editing record (because there is no menu pointing to these controller actions).
      *
      * @param array $item the menu item to be checked
      * @return boolean whether the menu item is active
      */
     protected function isItemActive($item)
     {
+        if (parent::isItemActive($item)) {
+            return true;
+        }
+
         $route = Yii::$app->controller->getRoute();
         $route = substr($route, 0, strrpos($route, '/'));
         $menuRoute = trim($item['url'][0], '/');

@@ -6,64 +6,58 @@
  */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\bootstrap\ButtonDropdown;
-use yii\bootstrap\Alert;
-
-$this->registerJs('
-    function alert(message, type) {
-        var button = $("<button>", {
-            type: "button",
-            class: "close",
-            "data-dismiss": "alert",
-            "aria-hidden": "true",
-            text: "x"
-        });
-        var alert = $("<div>", {
-            class: "alert alert-"+type+" fade in",
-        }).append(button).append(message);
-        $("#alert").empty().html(alert);
-    }
-    
-    $("#grid").on("click", ".changeDirectionBtn", function(e){
-        var self = $(this),
-            direction = self.data("direction"),
-            menuId = self.data("pid");
-
-        $.post("'.Url::to(['move']).'", {node_id: menuId, direction: direction}, function(data){
-            if (data.status === "success") {
-                $("#grid").empty().html(data.grid);
-            }
-            var type = data.status == "error" ? "danger" : data.status;
-            alert(data.message, type);
-        }, "json");
-
-        e.preventDefault();
-    });
-');
+use yii\grid\GridView;
+use bigbrush\cms\widgets\DeleteButton;
 
 Yii::$app->toolbar->add();
 
-$this->title = Yii::t('cms', 'Menu items');
+$this->title = Yii::t('cms', 'Menus');
 ?>
-
 <div class="row">
     <div class="col-md-12">
-        <div id="alert">
-        </div>
-        
         <h1><?= $this->title ?></h1>
-        
-        <?= ButtonDropdown::widget([
-            'label' => Yii::t('cms', 'Select menu'),
-            'options' => ['class' => 'btn btn-default', 'style' => 'margin-bottom: 10px;'],
-            'dropdown' => [
-                'items' => $dropdown,
-            ],
-        ]) ?>
-        
-        <div id="grid">
-            <?= $this->render('_grid', ['dataProvider' => $dataProvider]); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => [
+                    [
+                        'header' => Yii::t('cms', 'Title'),
+                        'format' => 'raw',
+                        'value' => function($data) {
+                            return Html::a($data->title, ['edit', 'id' => $data->id]);
+                        },
+                    ],
+                    [
+                        'header' => Yii::t('cms', 'Delete'),
+                        'format' => 'raw',
+                        'options' => ['width' => '1%'],
+                        'contentOptions' => ['style' => 'text-align:center; vertical-align:middle;'],
+                        'value' => function($data) {
+                            $popover = [];
+                            $popover[] = '<div style="text-align: center;">';
+                            $popover[] = '<p>' . Yii::t('cms', 'Are you sure to delete this menu?') . '</p>';
+                            $popover[] = '<p><strong>' . Yii::t('cms', 'All menu items are removed as well!') . '</strong></p>';
+                            $popover[] = Html::submitButton('<i class="fa fa-check"></i>', [
+                                'class' => 'btn btn-success',
+                            ]);
+                            $popover[] = Html::hiddenInput('id', $data->id);
+                            $popover[] = '</div>';
+
+                            return DeleteButton::widget([
+                                'model' => $data,
+                                'action' => ['delete', 'id' => $data->id],
+                                'options' => ['class' => 'btn-xs'],
+                                'title' => '<div style="text-align: center;"><strong>' . Yii::t('cms', 'Are you sure?')  . '</strong></div>',
+                                'content' => implode("\n", $popover),
+                            ]);
+                        },
+                    ],
+                ],
+            ]); ?>
         </div>
     </div>
 </div>

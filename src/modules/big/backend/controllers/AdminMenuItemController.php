@@ -10,9 +10,9 @@ namespace bigbrush\cms\modules\big\backend\controllers;
 use Yii;
 
 /**
- * AdminMenuController
+ * AdminMenuItemController
  */
-class AdminMenuController extends MenuController
+class AdminMenuItemController extends MenuItemController
 {
     const ACTIVE_MENU_ID = '_cms_admin_menu_id_'; // overrides value in BaseMenuController
 
