@@ -34,6 +34,10 @@ class UrlRule extends Object implements UrlRuleInterface
      * The id is only used when no menu points to this module.
      */
     private $_id = 'page';
+    /**
+     *
+     */
+    private $_categoryId = 'pcategory';
 
 
     /**
@@ -65,6 +69,8 @@ class UrlRule extends Object implements UrlRuleInterface
                 $prepend = $this->_id;
             }
             return $prepend . '/' . $params['alias'];
+        } elseif ($route === 'pages/category/pages') {
+            return $this->_categoryId . '/' . $params['catid'] . '/' . $params['alias'];
         }
         return false;
     }
@@ -80,6 +86,10 @@ class UrlRule extends Object implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
+        $suffix = Yii::$app->getUrlManager()->suffix;
+        if ($suffix !== null) {
+            $pathInfo = substr($pathInfo, 0, -strlen($suffix));
+        }
         // this url rule will always have minimum 2 url path segments (separated by a "/")
         if (strpos($pathInfo, '/') !== false) {
             // split the current path into segments
@@ -90,7 +100,10 @@ class UrlRule extends Object implements UrlRuleInterface
             // in this case we also know that no menu points directly to the requested page (otherwise this url rule would never get activated)
             // use the second segment
             if ($segments[0] === $this->_id) {
+                return ['pages/page/show', ['alias' => $segments[1]]];
+            } elseif ($segments[0] === $this->_categoryId) {
                 $identifier = $segments[1];
+                return ['pages/category/pages', ['catid' => $segments[1]]];
             } else {
                 // last segment could be our identifier, we need the segment right before that
                 // to check if it matches a menu pointing to a pages category
@@ -98,15 +111,8 @@ class UrlRule extends Object implements UrlRuleInterface
                 $menu = Yii::$app->big->menuManager->search('alias', $alias);
                 // the menu points to a page category
                 if ($menu && strpos($menu->route, 'pages/category/pages') === 0) {
-                    $identifier = array_pop($segments);
+                    return ['pages/page/show', ['alias' => array_pop($segments)]];
                 }
-            }
-            if ($identifier !== false) {
-                $suffix = Yii::$app->getUrlManager()->suffix;
-                if ($suffix !== null) {
-                    $identifier = substr($identifier, 0, -strlen($suffix));
-                }
-                return ['pages/page/show', ['alias' => $identifier]];
             }
         }
         return false;
