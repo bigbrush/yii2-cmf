@@ -11,6 +11,7 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use bigbrush\big\models\Menu;
 use bigbrush\cms\base\BaseMenuController;
 
 /**
