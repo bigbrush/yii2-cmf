@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "bigbrush/yii2-big": "dev-master",
+        "bigbrush/yii2-big": "1.*",
         "yiisoft/yii2-swiftmailer": "*"
     },
     "autoload": {
