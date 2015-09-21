@@ -52,6 +52,15 @@ class AdminMenu extends Menu
     /**
      * @inheritdoc
      */
+    public function beforeSave($insert)
+    {
+        $this->params = ['icon' => $this->icon];
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterFind()
     {
         parent::afterFind();
