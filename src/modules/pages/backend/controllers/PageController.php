@@ -59,7 +59,6 @@ class PageController extends Controller
     public function actionEdit($id = 0)
     {
         $model = new Page();
-        $categories = Yii::$app->big->categoryManager->getDropDownList('pages');
         if ($id) {
             $model = Page::find()->where(['id' => $id])->with(['author', 'editor'])->one();
         }
@@ -72,6 +71,7 @@ class PageController extends Controller
                 return $this->redirect(['index']);
             }
         }
+        $categories = Yii::$app->big->categoryManager->getDropDownList('pages');
         $templates = Yii::$app->big->templateManager->getDropDownList(Yii::t('cms', '- Use default template -'));
         return $this->render('edit', [
             'model' => $model,
