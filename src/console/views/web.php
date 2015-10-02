@@ -45,7 +45,7 @@ $config = [
             ],
         ],
         'request' => [
-            'cookieValidationKey' => <?= $cookieValidationKey ?>,
+            'cookieValidationKey' => '<?= $cookieValidationKey ?>',
             'csrfParam' => '_frontendCSRF',
         ],
         'urlManager' => [

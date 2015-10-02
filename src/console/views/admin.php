@@ -44,7 +44,7 @@ $config = [
             'class' => 'bigbrush\cms\components\Toolbar',
         ],
         'request' => [
-            'cookieValidationKey' => <?= $cookieValidationKey ?>,
+            'cookieValidationKey' => '<?= $cookieValidationKey ?>',
             'csrfParam' => '_backendCSRF',
         ],
         'urlManager' => [
