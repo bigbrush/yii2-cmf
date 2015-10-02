@@ -38,6 +38,7 @@ class m150530_182223_init extends Migration
             'username' => Schema::TYPE_STRING . ' NOT NULL',
             'email' => Schema::TYPE_STRING . ' NOT NULL',
             'phone' => Schema::TYPE_STRING . ' NOT NULL',
+            'avatar' => Schema::TYPE_STRING . ' NOT NULL',
             'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
             'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
             'password_reset_token' => Schema::TYPE_STRING,
@@ -178,6 +179,7 @@ class m150530_182223_init extends Migration
             'username' => 'bigadmin',
             'email' => 'admin@admin.com',
             'phone' => '',
+            'avatar' => 'media/filemanager/avatars/default_man.jpg',
             'auth_key' => '',
             'password_hash' => '$2y$13$r.hdHfm654WFTrFZgAE3/eC6jEukNnQzoZhB/kt3et53J.0snTYAy', // bigadmin
             'password_reset_token' => '',

@@ -97,7 +97,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'filter', 'filter' => 'trim'],
             
             // username
-            ['username', 'unique', 'targetClass' => 'bigbrush\cms\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => 'bigbrush\cms\models\User', 'message' => Yii::t('cms', 'This username has already been taken.')],
             ['username', 'string', 'min' => 3, 'max' => 255],
 
             // name
@@ -105,10 +105,13 @@ class User extends ActiveRecord implements IdentityInterface
 
             // phone
             ['phone', 'string', 'min' => 0, 'max' => 255],
+            
+            // avatar
+            ['avatar', 'string', 'min' => 0, 'max' => 255],
 
             // email
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => 'bigbrush\cms\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => 'bigbrush\cms\models\User', 'message' => Yii::t('cms', 'This email address has already been taken.')],
 
             // password
             ['password', 'required', 'when' => function ($model) {
