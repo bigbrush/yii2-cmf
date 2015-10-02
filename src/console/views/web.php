@@ -45,7 +45,8 @@ $config = [
             ],
         ],
         'request' => [
-            'cookieValidationKey' => 'Tm0TqcYJYJLX9PTIPNyYjEFzUbX-wMoB',
+            'cookieValidationKey' => <?= $cookieValidationKey ?>,
+            'csrfParam' => '_frontendCSRF',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -60,10 +61,13 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'bigbrush\cms\models\User',
-            'enableAutoLogin' => false,
+            'enableAutoLogin' => true,
+            'identityCookie' => [
+                'name' => '_frontendUser',
+            ],
         ],
         'session' => [
-            'name' => 'FRONTENDID',
+            'name' => 'FRONTENDSESSIONID',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

@@ -261,7 +261,8 @@ class CmsController extends MigrateController
     }
 
     /**
-     * Creates config files used by Big Cms.
+     * Creates config files used by Big Cms. Note that the config files are updated with a new cookieValidationKey
+     * each time this command is called.
      * The default configuration is production ready.
      *
      * The "db.php" config file is created based on the provided type of database.
@@ -284,6 +285,7 @@ class CmsController extends MigrateController
         // create "admin.php" config file.
         $content = $this->renderFile('@bigbrush/cms/console/views/admin.php', [
             'language' => $this->language,
+            'cookieValidationKey' => $this->createRandomString(),
         ]);
         $file = Yii::getAlias($this->configPath . '/admin.php');
         file_put_contents($file, $content);
@@ -291,9 +293,23 @@ class CmsController extends MigrateController
         // create "web.php" config file.
         $content = $this->renderFile('@bigbrush/cms/console/views/web.php', [
             'language' => $this->language,
+            'cookieValidationKey' => $this->createRandomString(),
         ]);
         $file = Yii::getAlias($this->configPath . '/web.php');
         file_put_contents($file, $content);
+    }
+
+    /**
+     * Returns a random string used for creating a cookieValidationKey.
+     * Implementation taken from Yii2 install file (the file "init").
+     *
+     * @return string a random string
+     */
+    public function createRandomString()
+    {
+        $length = 32;
+        $bytes = openssl_random_pseudo_bytes($length);
+        return strtr(substr(base64_encode($bytes), 0, $length), '+/=', '_-.');
     }
 
     /**

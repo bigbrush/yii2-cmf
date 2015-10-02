@@ -44,7 +44,8 @@ $config = [
             'class' => 'bigbrush\cms\components\Toolbar',
         ],
         'request' => [
-            'cookieValidationKey' => 'Tm0TqcYJYJLX9PTIPNyYjEFzUbX-wMoB',
+            'cookieValidationKey' => <?= $cookieValidationKey ?>,
+            'csrfParam' => '_backendCSRF',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -58,11 +59,14 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'bigbrush\cms\models\User',
-            'enableAutoLogin' => false,
+            'enableAutoLogin' => true,
+            'identityCookie' => [
+                'name' => '_backendUser',
+            ],
             'loginUrl' => [''],
         ],
         'session' => [
-            'name' => 'BACKENDID',
+            'name' => 'BACKENDSESSIONID',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
