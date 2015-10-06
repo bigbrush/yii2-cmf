@@ -30,6 +30,7 @@ class m150530_182223_init extends Migration
             'meta_description' => Schema::TYPE_STRING . ' NOT NULL',
             'meta_keywords' => Schema::TYPE_STRING . ' NOT NULL',
             'template_id' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'params' => Schema::TYPE_TEXT . ' NOT NULL',
         ], $tableOptions);
         // user table
         $this->createTable('{{%user}}', [
@@ -135,7 +136,7 @@ class m150530_182223_init extends Migration
             'meta_description' => '',
             'meta_keywords' => '',
             'template_id' => 0,
-
+            'params' => '{"show_title":"1"}',
         ]);
         
         // insert a menu and a home menu item into menu table

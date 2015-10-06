@@ -15,7 +15,9 @@ if (!empty($model->meta_keywords)) {
 ?>
 <div class="row">
     <div class="col-md-12">
+    	<?php if ($model->params['show_title']) : ?>
         <h1><?= Html::encode($model->title) ?></h1>
+        <?php endif; ?>
         <?= $model->content ?>
     </div>
 </div>

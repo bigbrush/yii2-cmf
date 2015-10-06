@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\helpers\Json;
 use bigbrush\big\models\Template;
 use bigbrush\big\models\Category;
 use bigbrush\cms\models\User;
@@ -39,6 +40,16 @@ class Page extends ActiveRecord
     const STATE_ACTIVE = 1;
     const STATE_INACTIVE = 2;
     const STATE_THRASHED = 100;
+
+
+    /**
+     * Registers default values for a page.
+     */
+    public function init()
+    {
+        parent::init();
+        $this->params = ['show_title' => 1];
+    }
 
 
     /**
@@ -168,7 +179,29 @@ class Page extends ActiveRecord
             ['state', 'in', 'range' => array_keys($this->getStateOptions())],
             [['meta_title', 'meta_description', 'meta_keywords', 'alias'], 'string', 'max' => 255],
             ['template_id', 'integer'],
+            ['params', 'each', 'rule' => ['string']],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->params = Json::encode($this->params);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        $this->params = Json::decode($this->params);
     }
 
     /**
@@ -183,6 +216,7 @@ class Page extends ActiveRecord
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'slugAttribute' => 'alias',
+                'ensureUnique' => true,
                 'immutable' => true,
             ],
         ];
