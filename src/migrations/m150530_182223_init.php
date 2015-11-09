@@ -180,7 +180,7 @@ class m150530_182223_init extends Migration
             'username' => 'bigadmin',
             'email' => 'admin@admin.com',
             'phone' => '',
-            'avatar' => 'media/filemanager/avatars/default_man.jpg',
+            'avatar' => 'media/filemanager/avatars/man.jpg',
             'auth_key' => '',
             'password_hash' => '$2y$13$r.hdHfm654WFTrFZgAE3/eC6jEukNnQzoZhB/kt3et53J.0snTYAy', // bigadmin
             'password_reset_token' => '',
