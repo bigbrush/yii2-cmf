@@ -9,6 +9,7 @@ namespace bigbrush\cms\widgets;
 
 use Yii;
 use yii\web\JsExpression;
+use bigbrush\big\models\Block;
 use bigbrush\big\widgets\editor\Editor as BigEditor;
 
 /**
@@ -25,7 +26,7 @@ use bigbrush\big\widgets\editor\Editor as BigEditor;
 class Editor extends BigEditor
 {
     /**
-     * @var string defines the skin_url to use.
+     * @var string defines the skin to use.
      * @see http://www.tinymce.com/wiki.php/Configuration:skin
      */
     public $skin = 'light';
@@ -120,15 +121,16 @@ class Editor extends BigEditor
             foreach ($matches as $match) {
                 $mapper[$match[0]] = $match[1];
             }
-            $models = $manager->getModel()->find()->where(['title' => array_values($mapper)])->all();
+            $models = $manager->getModel()
+                ->find()
+                ->where(['title' => array_values($mapper), 'state' => Block::STATE_ACTIVE])
+                ->asArray()
+                ->all();
 
             // update mapper with found blocks
             foreach ($models as $model) {
-                $key = array_search($model->title, $mapper);
-                $mapper[$key] = $manager->createObject([
-                    'class' => $model->namespace,
-                    'model' => $model,
-                ]);
+                $key = array_search($model['title'], $mapper);
+                $mapper[$key] = $manager->createBlockFromData($model);
             }
 
             // replace block include statements
