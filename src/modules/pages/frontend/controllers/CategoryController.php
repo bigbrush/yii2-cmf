@@ -20,15 +20,23 @@ class CategoryController extends Controller
     /**
      * Shows pages from a single category.
      *
-     * @param int $catid id of a category to load articles from.
+     * @param int $catid id of a category to load pages from.
      * @return string the rendering result.
      */
     public function actionPages($catid)
     {
         $category = Yii::$app->big->categoryManager->getItem($catid);
-        $pages = Page::find()->byCategory($catid)->byState(Page::STATE_ACTIVE)->orderBy('created_at')->all();
-        foreach ($pages as $page) {
-            $page->content = Editor::process($page->content);
+        if (!empty($category->content)) {
+            $category->content = Editor::process($category->content);
+        }
+        $pages = Page::find()
+            ->byCategory($catid)
+            ->byState(Page::STATE_ACTIVE)
+            ->orderBy('created_at')
+            ->asArray()
+            ->all();
+        foreach ($pages as &$page) {
+            $page['content'] = Editor::process($page['content']);
         }
         return $this->render('pages', [
             'category' => $category,

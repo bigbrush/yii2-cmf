@@ -29,14 +29,14 @@ $dateDisplayed = $params['show_page_dates'] ? $params['show_page_dates'] : false
     <div class="<?= $class ?>">
         <?php if ($dateDisplayed) : ?>
         <div class="page-date">
-            <?= Yii::$app->getFormatter()->asDate($page->$dateDisplayed) ?>
+            <?= Yii::$app->getFormatter()->asDate($page[$dateDisplayed]) ?>
         </div>
         <?php endif; ?>
 
-        <?= Html::a(Html::encode($page->title), Route::page($page, '/')) ?>
+        <?= Html::a(Html::encode($page['title']), Route::page($page, '/')) ?>
         
         <?php if ($category->params['show_page_content']) : ?>
-        <?= $page->content ?>
+        <?= $page['content'] ?>
         <?php endif; ?>
     </div>
     <?php endforeach; ?>
