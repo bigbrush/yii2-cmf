@@ -76,6 +76,7 @@ return [
     'Font awesome icon' => 'Font awesome ikon',
     'Frontend' => 'Frontend',
     'INSERT_BLOCK_TITLE' => 'INDÆT_BLOK_TITEL',
+    'Icon' => 'Ikon',
     'Id' => 'Id',
     'Inactive' => 'Inaktiv',
     'Info' => 'Info',

@@ -35,7 +35,7 @@ class AdminMenu extends Menu
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'icon' => Yii::t('big', 'Icon'),
+            'icon' => Yii::t('cms', 'Icon'),
         ]);
     }
 
