@@ -20,7 +20,11 @@ $class = 'col-md-' . 12 / $params['pages_pr_row'];
 $dateDisplayed = $params['show_page_dates'] ? $params['show_page_dates'] : false;
 ?>
 <?php if ($category->params['show_category_title']) : ?>
-	<h1><?= $category->title ?></h1>
+    <h1><?= $category->title ?></h1>
+<?php endif; ?>
+
+<?php if ($category->params['show_category_content']) : ?>
+	<?= $category->content ?>
 <?php endif; ?>
 
 <?php foreach ($chunks as $pages) : ?>
