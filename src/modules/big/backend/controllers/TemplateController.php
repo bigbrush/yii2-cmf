@@ -48,8 +48,10 @@ class TemplateController extends Controller
                 return $this->redirect(['index']);
             }
         }
+        $layouts = Yii::$app->big->getFrontendThemeLayouts();
         return $this->render('edit', [
             'model' => $model,
+            'layouts' => $layouts,
         ]);
     }
 

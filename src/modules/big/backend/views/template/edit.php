@@ -22,8 +22,11 @@ $this->title = $title;
         </div>
     </div>
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-6">
             <?= $form->field($model, 'title', ['inputOptions' => ['class' => 'form-control input-lg']]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'layout')->dropDownList($layouts) ?>
         </div>
         <div class="col-md-3">
             <?php

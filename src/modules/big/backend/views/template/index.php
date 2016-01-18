@@ -28,6 +28,14 @@ $this->title = Yii::t('cms', 'Templates');
                         },
                     ],
                     [
+                        'header' => Yii::t('cms', 'Layout'),
+                        'options' => ['width' => '20%'],
+                        'format' => 'raw',
+                        'value' => function($data) {
+                            return empty($data->layout) ? Yii::t('cms', 'Default') : $data->layout;
+                        },
+                    ],
+                    [
                         'header' => Yii::t('cms', 'Default'),
                         'format' => 'raw',
                         'options' => ['width' => '1%'],
