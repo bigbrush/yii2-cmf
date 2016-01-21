@@ -63,7 +63,7 @@ class PageController extends Controller
         if ($id) {
             $model = Page::find()->where(['id' => $id])->with(['author', 'editor'])->one();
         } else {
-            $model->images['config'] = Gallery::getDefaultConfig();
+            $model->images['config'] = Gallery::getDefaultOptions();
         }
         $request = Yii::$app->getRequest();
         if ($model->load($request->post()) && $model->save()) {
