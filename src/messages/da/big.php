@@ -20,6 +20,7 @@ return [
     'Active' => 'Aktiv',
     'Inactive' => 'Inaktiv',
     'Thrashed' => 'Smidt ud',
+    'Use default layout' => 'Brug standard layout',
     
     /**
      * Widgets

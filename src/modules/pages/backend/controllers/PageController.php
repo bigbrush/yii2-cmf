@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\View;
 use yii\helpers\Url;
 use bigbrush\cms\modules\pages\models\Page;
+use bigbrush\cms\modules\pages\widgets\Gallery;
 
 /**
  * PageController
@@ -61,6 +62,8 @@ class PageController extends Controller
         $model = new Page();
         if ($id) {
             $model = Page::find()->where(['id' => $id])->with(['author', 'editor'])->one();
+        } else {
+            $model->images['config'] = Gallery::getDefaultConfig();
         }
         $request = Yii::$app->getRequest();
         if ($model->load($request->post()) && $model->save()) {

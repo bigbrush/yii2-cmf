@@ -35,15 +35,24 @@ $items = [
             'form' => $form
         ]),
     ],
+    [
+        'label' => Yii::t('cms', 'Images'),
+        'content' => $this->render('_tab_images', [
+            'model' => $model,
+            'form' => $form
+        ]),
+    ],
 ];
 if ($model->getIsNewRecord() === false) {
     $items[] = [
-    'label' => Yii::t('cms', 'Info'),
-    'content' => $this->render('_tab_info', [
-        'model' => $model,
-        'form' => $form
-    ]),
-];
+        'label' => Yii::t('cms', 'Info'),
+        'content' => $this->render('_tab_info', [
+            'model' => $model,
+            'form' => $form
+        ]),
+    ];
+
+    $title .= ' <span class="small">[ ' . $model->title . ' ]</span>';
 }
 ?>
     <h1><?= $title ?></h1>
