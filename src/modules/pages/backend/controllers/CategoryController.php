@@ -8,7 +8,9 @@
 namespace bigbrush\cms\modules\pages\backend\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use bigbrush\cms\base\BaseCategoryController;
+use bigbrush\cms\modules\pages\widgets\Gallery;
 
 /**
  * CategoryController
@@ -36,5 +38,22 @@ class CategoryController extends BaseCategoryController
     public function getTreeId()
     {
         return 'pages';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getModel($id = 0)
+    {
+        $model = parent::getModel($id);
+        if (!$id || !isset($model->params['images'])) {
+            $params = is_array($model->params) ? $model->params : [];
+            $params['images'] = [
+                'images' => [],
+                'config' => Gallery::getDefaultOptions(),
+            ];
+            $model->params = $params;
+        }
+        return $model;
     }
 }

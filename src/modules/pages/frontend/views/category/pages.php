@@ -7,6 +7,7 @@
 
 use yii\helpers\Html;
 use bigbrush\cms\modules\pages\components\Route;
+use bigbrush\cms\modules\pages\widgets\Gallery;
 
 $this->title = (!empty($category->meta_title) ? $category->meta_title : $category->title);
 $this->registerMetaTag(['name' => 'description', 'content' => $category->meta_description]);
@@ -18,7 +19,20 @@ $params = $category->params;
 $chunks = array_chunk($pages, $params['pages_pr_row']);
 $class = 'col-md-' . 12 / $params['pages_pr_row'];
 $dateDisplayed = $params['show_page_dates'] ? $params['show_page_dates'] : false;
+
+$images = isset($category->params['images']) ? $category->params['images'] : [];
+$options = [];
+if (isset($images['config'])) {
+    $options = $images['config'];
+    unset($images['config']);
+}
 ?>
+
+<?= Gallery::widget([
+    'images' => $images,
+    'options' => $options,
+]) ?>
+
 <?php if ($category->params['show_category_title']) : ?>
     <h1><?= $category->title ?></h1>
 <?php endif; ?>

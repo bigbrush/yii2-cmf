@@ -49,7 +49,7 @@ abstract class BaseCategoryController extends Controller
         return [
             'move' => [
                 'class' => 'bigbrush\big\core\NestedSetMoveAction',
-                'model' => $this->getManager()->getModel(),
+                'model' => $this->getModel(),
                 'updateContent' => function() {
                     return $this->renderPartial('_grid', ['dataProvider' => $this->getDataProvider()]);
                 },
@@ -65,6 +65,16 @@ abstract class BaseCategoryController extends Controller
     public function getManager()
     {
         return Yii::$app->big->categoryManager;
+    }
+
+    /**
+     * Returns the model of this controller.
+     *
+     * @return bigbrush\big\models\Category the model used in controller.
+     */
+    public function getModel($id = 0)
+    {
+        return $this->getManager()->getModel($id);
     }
 
     /**
@@ -101,7 +111,7 @@ abstract class BaseCategoryController extends Controller
     public function actionEdit($id = 0)
     {
         $manager = $this->getManager();
-        $model = $manager->getModel($id);
+        $model = $this->getModel($id);
         if ($manager->saveModel($this->getTreeId(), $model)) {
             Yii::$app->getSession()->setFlash('success', Yii::t('cms', 'Category saved'));
             if (Yii::$app->toolbar->stayAfterSave()) {
@@ -133,7 +143,7 @@ abstract class BaseCategoryController extends Controller
         if ($categoryId != $id) {
             throw new InvalidCallException("Invalid form submitted. Category with id: '$id' not deleted.");
         }
-        $model = $this->getManager()->getModel($id);
+        $model = $this->getModel($id);
         if ($model) {
             if ($model->delete()) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('cms', 'Category deleted.'));

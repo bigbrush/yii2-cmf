@@ -24,12 +24,12 @@ $this->registerJs('
     $("document").ready(function(){
         $(".image-modal-btn").click(function(){
             var imageId = $(this).data("image");
-            curImage = "page-images-" + imageId + "-image";
+            curImage = "category-params-images-" + imageId + "-image";
             $("#image-modal").modal();
         });
         $(".url-modal-btn").click(function(){
             var imageId = $(this).data("image");
-            curLink = "page-images-" + imageId + "-link";
+            curLink = "category-params-images-" + imageId + "-link";
             $("#url-modal").modal();
         });
     });
@@ -37,7 +37,7 @@ $this->registerJs('
 
 $panels = [];
 for ($i = 0; $i < 6; $i++) {
-    $html = $form->field($model, 'images[' . $i . '][image]', [
+    $html = $form->field($model, 'params[images][' . $i . '][image]', [
         'template' => '
             {label}
             <div class="form-group">
@@ -54,9 +54,9 @@ for ($i = 0; $i < 6; $i++) {
             '
     ])->label(Yii::t('cms', 'Image') . ' ' . ($i + 1));
 
-    $html .= $form->field($model, 'images[' . $i . '][alt]')->label(Yii::t('cms', 'Alt'));
+    $html .= $form->field($model, 'params[images][' . $i . '][alt]')->label(Yii::t('cms', 'Alt'));
 
-    $html .=$form->field($model, 'images[' . $i . '][link]', [
+    $html .=$form->field($model, 'params[images][' . $i . '][link]', [
             'template' => '
             {label}
             <div class="form-group">
@@ -83,17 +83,17 @@ $chunks = array_chunk($panels, 2);
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
-                <?= $form->field($model, 'images[config][type]')
+                <?= $form->field($model, 'params[images][config][type]')
                     ->dropDownList(Gallery::getGalleryTypes())
                     ->label(Yii::t('cms', 'Gallery type')) ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'images[config][enableJs]')
+                <?= $form->field($model, 'params[images][config][enableJs]')
                     ->dropDownList([1 => Yii::t('cms', 'Yes'), 0 => Yii::t('cms', 'No')])
                     ->label(Yii::t('cms', 'Enable javascript')) ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'images[config][enableCss]')
+                <?= $form->field($model, 'params[images][config][enableCss]')
                     ->dropDownList([1 => Yii::t('cms', 'Yes'), 0 => Yii::t('cms', 'No')])
                     ->label(Yii::t('cms', 'Enable CSS')) ?>
             </div>

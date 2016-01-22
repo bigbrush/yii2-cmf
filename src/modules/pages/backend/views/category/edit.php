@@ -10,14 +10,19 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Tabs;
 
 $type = Yii::t('cms', 'category');
-$this->title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
+$title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
+$this->title = $title;
+
+if (!$model->getIsNewRecord()) {
+    $title .= ' <span class="small">[ ' . $model->title . ' ]</span>';
+}
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
     
     <?php Yii::$app->toolbar->save()->saveStay()->back(); ?>
 
-    <h1><?= $this->title ?></h1>
+    <h1><?= $title ?></h1>
     
     <div class="row">
         <div class="col-md-12">
@@ -34,6 +39,13 @@ $this->title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Cr
                     [
                         'label' => Yii::t('cms', 'Publishing'),
                         'content' => $this->render('_tab_publishing', [
+                            'form' => $form,
+                            'model' => $model,
+                        ]),
+                    ],
+                    [
+                        'label' => Yii::t('cms', 'Images'),
+                        'content' => $this->render('_tab_images', [
                             'form' => $form,
                             'model' => $model,
                         ]),
