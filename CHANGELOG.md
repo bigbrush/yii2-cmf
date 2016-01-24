@@ -1,6 +1,10 @@
 CMF Change Log
 ==========================
 
+0.0.5 January XX, 2016
+------------------
+- Enh: Pages module: A page and category can have up to 6 images attached and displayed as a simple gallery
+
 
 0.0.4 June 13, 2015
 ------------------
