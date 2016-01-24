@@ -53,8 +53,8 @@ $config = [
         ],
         'view' => [
             'theme' => [
-                'basePath' => '@app/themes/adminlte',
-                'baseUrl' => '@web/themes/adminlte',
+                'basePath' => '@bigbrush/cms/themes/adminlte',
+                'baseUrl' => '@bigbrush/cms/themes/adminlte',
             ],
         ],
         'user' => [
