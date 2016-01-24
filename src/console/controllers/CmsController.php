@@ -75,10 +75,6 @@ class CmsController extends MigrateController
      */
     protected $configPath = '@app/common/config';
     /**
-     * @var string name of the "db" config file used by Big Cms.
-     */
-    protected $dbConfigFile = 'db.php';
-    /**
      * @var array list of file paths used when applying migrations.
      * Big Framework needs to be migrated first.
      */
@@ -107,10 +103,31 @@ class CmsController extends MigrateController
     public function init()
     {
         parent::init();
-        $this->db = Yii::createObject(['class' => $this->class]);
+        $config = $this->getConfigFile('db');
+        // if config doesn't exist where are installing, if it does we are updating.
+        if ($config === false) {
+            $this->db = Yii::createObject(['class' => $this->class]);
+        } else {
+            $this->db = Yii::createObject($config);
+        }
         $this->migrationPath = '@bigbrush/cms/migrations';
         $this->defaultAction = 'info';
-        $this->dbConfigFile = Yii::getAlias($this->configPath . '/' . $this->dbConfigFile);
+    }
+
+    /**
+     * Returns the content of a config file or the path to the file.
+     *
+     * @param string $file the name of a config file.
+     * @param bool $loadFile whether to load the contents of the file.
+     * @return array|bool content of the config file. False if the the file doesn't exist.
+     */
+    public function getConfigFile($file, $loadFile = true)
+    {
+        $file = Yii::getAlias($this->configPath . '/' . $file . '.php');
+        if (!is_file($file)) {
+            return false;
+        }
+        return $loadFile ? require($file) : $file;
     }
 
     /**
@@ -163,6 +180,12 @@ class CmsController extends MigrateController
 
         $this->stdout("Choosing a language:\n", Console::FG_YELLOW);
         $this->stdout("yii cms/install --language=es\n\n", Console::FG_YELLOW);
+
+        $this->stdout("Updating Big Cms:\n", Console::FG_YELLOW);
+        $this->stdout("yii cms/update\n\n", Console::FG_YELLOW);
+
+        $this->stdout("Configure database:\n", Console::FG_YELLOW);
+        $this->stdout("yii cms/configure\n\n", Console::FG_YELLOW);
         
     }
 
@@ -209,7 +232,7 @@ class CmsController extends MigrateController
         $this->stdout("  - Application configured\n", Console::FG_GREEN);
 
         // test database connection based on created "db" config file
-        $config = require($this->dbConfigFile);
+        $config = $this->getConfigFile('db');
         $connection = Yii::createObject($config);
         if ($this->testDatabaseConnection($connection) === self::EXIT_CODE_ERROR) {
             $this->stdout("Database connection could not be established\n", Console::FG_RED);
@@ -224,12 +247,25 @@ class CmsController extends MigrateController
         // apply migrations
         $this->db = $connection;
         if ($this->applyMigrations() === self::EXIT_CODE_ERROR) {
-            $this->stdout("Database migration could not be applied.\n", Console::FG_RED);
             return self::EXIT_CODE_ERROR;
         }
         
         // install completed successfully
         $this->stdout("\nCms installed and ready to use.\n", Console::FG_GREEN);
+    }
+
+    /**
+     * Upgrades the application by applying new migrations.
+     *
+     * @return integer the status of the action execution. 0 means normal, other values mean abnormal.
+     */
+    public function actionUpdate()
+    {
+        if ($this->applyMigrations() === self::EXIT_CODE_ERROR) {
+            return self::EXIT_CODE_ERROR;
+        }
+        
+        $this->stdout("\nCms updated successfully.\n", Console::FG_GREEN);
     }
 
     /**
@@ -242,15 +278,14 @@ class CmsController extends MigrateController
     public function actionConfigure($type = 'mysql')
     {
         // if config file doesn't exist cms is not installed
-        $file = Yii::getAlias($this->configPath . '/admin.php');
-        if (!is_file($file)) {
+        $config = $this->getConfigFile('admin');
+        if (!$config) {
             $this->stdout("Cms is not installed. Please run the command 'yii cms/install'.\n", Console::FG_RED);
             return self::EXIT_CODE_ERROR;
         }
 
         // use the language from the config file if not provided through console
         if ($this->language === null) {
-            $config = require($file);
             $this->language = $config['language'];
         }
 
@@ -280,14 +315,16 @@ class CmsController extends MigrateController
             'password' => $this->password,
             'charset' => $this->charset,
         ]);
-        file_put_contents($this->dbConfigFile, $content);
+        $file = $this->getConfigFile('db', false);
+        file_put_contents($file, $content);
 
         // create "admin.php" config file.
         $content = $this->renderFile('@bigbrush/cms/console/views/admin.php', [
             'language' => $this->language,
             'cookieValidationKey' => $this->createRandomString(),
         ]);
-        $file = Yii::getAlias($this->configPath . '/admin.php');
+        // $file = Yii::getAlias($this->configPath . '/admin.php');
+        $file = $this->getConfigFile('admin', false);
         file_put_contents($file, $content);
         
         // create "web.php" config file.
@@ -295,7 +332,8 @@ class CmsController extends MigrateController
             'language' => $this->language,
             'cookieValidationKey' => $this->createRandomString(),
         ]);
-        $file = Yii::getAlias($this->configPath . '/web.php');
+        // $file = Yii::getAlias($this->configPath . '/web.php');
+        $file = $this->getConfigFile('web', false);
         file_put_contents($file, $content);
     }
 
@@ -359,6 +397,7 @@ class CmsController extends MigrateController
             $this->migrationPath = Yii::getAlias($path);
             if ($this->actionUp() === self::EXIT_CODE_ERROR) {
                 $this->actionDown('all');
+                $this->stdout("Database migration could not be applied.\n", Console::FG_RED);
                 return self::EXIT_CODE_ERROR;
             }
         }
