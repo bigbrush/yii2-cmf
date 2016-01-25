@@ -12,6 +12,10 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\big\core\User */
 
+$this->registerJs('
+    $("#loginform-username").focus();
+');
+
 $this->title = Yii::t('cms', 'Login');
 ?>
 <div class="row">
