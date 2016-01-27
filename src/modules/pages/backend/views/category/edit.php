@@ -34,6 +34,7 @@ if (!$model->getIsNewRecord()) {
                             'form' => $form,
                             'model' => $model,
                             'parents' => $parents,
+                            'templates' => $templates,
                         ]),
                     ],
                     [

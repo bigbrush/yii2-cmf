@@ -16,10 +16,13 @@ use bigbrush\cms\widgets\Editor;
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <?= $form->field($model, 'parent_id')->dropDownList($parents) ?>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <?= $form->field($model, 'template_id')->dropDownList($templates) ?>
+            </div>
+            <div class="col-md-4">
                 <?= $form->field($model, 'state')->dropDownList($model->getStateOptions()) ?>
             </div>
         </div>

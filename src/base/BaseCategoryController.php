@@ -125,9 +125,11 @@ abstract class BaseCategoryController extends Controller
         if ($parent = $manager->getParent($model)) {
             $model->parent_id = $parent->id;
         }
+        $templates = Yii::$app->big->templateManager->getDropDownList(Yii::t('cms', '- Use default template -'));
         return $this->render('edit', [
             'model' => $model,
             'parents' => $parents,
+            'templates' => $templates,
         ]);
     }
 

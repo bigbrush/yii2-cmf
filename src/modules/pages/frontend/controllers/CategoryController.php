@@ -29,6 +29,7 @@ class CategoryController extends Controller
         if (!empty($category->content)) {
             $category->content = Editor::process($category->content);
         }
+        Yii::$app->big->setTemplate($category->template_id);
         $pages = Page::find()
             ->byCategory($catid)
             ->byState(Page::STATE_ACTIVE)

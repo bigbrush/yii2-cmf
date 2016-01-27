@@ -47,4 +47,5 @@ return [
     'Meta title' => 'Meta titel',
     'Meta description' => 'Meta beskrivelse',
     'Meta keywords' => 'Meta nøgleord',
+    'Template' => 'Skabelon',
 ];
