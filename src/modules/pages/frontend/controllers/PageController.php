@@ -28,7 +28,7 @@ class PageController extends Controller
     {
         $model = Page::find()->where(['alias' => $alias])->byState(Page::STATE_ACTIVE)->one();
         if (!$model) {
-            throw new NotFoundHttpException("Page not found.");
+            throw new NotFoundHttpException(Yii::t('cms', 'Page not found.'));
         }
         Yii::$app->big->setTemplate($model->template_id);
         return $this->render('index', [

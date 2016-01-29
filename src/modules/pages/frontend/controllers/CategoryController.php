@@ -27,7 +27,7 @@ class CategoryController extends Controller
     {
         $category = Yii::$app->big->categoryManager->getItem($catid);
         if (!$category) {
-            throw new NotFoundHttpException("Category not found.");
+            throw new NotFoundHttpException(Yii::t('cms', 'Category not found.'));
         }
         Yii::$app->big->setTemplate($category->template_id);
         $pages = Page::find()
