@@ -9,19 +9,14 @@ namespace bigbrush\cms\widgets;
 
 use Yii;
 use yii\web\JsExpression;
-use bigbrush\big\models\Block;
 use bigbrush\big\widgets\editor\Editor as BigEditor;
 
 /**
  * Editor provides an editor that is setup specifically for Big Cms. An extra menu item is added
  * in the "Insert" submenu which can be used to insert block include statement.
  *
- * Use like the following when displaying content: 
- * Page represents a model where the property $content is populated with data created with the editor. 
- * ~~~php
- * $page = Page::findOne(1);
- * $page->content = Editor::process($page->content); // <-- this line
- * ~~~
+ * Big Cms will automatically detect any include statements and insert block content. This
+ * is done in the plugin [[bigbrush\cms\plugins\system\blockinclude\Plugin]].
  */
 class Editor extends BigEditor
 {
@@ -86,64 +81,5 @@ class Editor extends BigEditor
                 });
             }')
         ];
-    }
-
-    /**
-     * Processes the provided data by replacing block include statements with block content.
-     * 
-     * An include statement looks like the following:
-     * ~~~
-     * {block Contact}
-     * ~~~
-     * The first part (block) is required and the second part (Contact) is a title of a block.
-     * 
-     * @param string $data the data to process.
-     * @return string the processed data.
-     */
-    public static function process($data)
-    {
-        // simple performance check to determine whether further processing is required
-        if (strpos($data, 'block') === false) {
-            return $data;
-        }
-
-        // Find all instances of block and put in $matches
-        // $matches[0] is full pattern match, $matches[1] is the block title
-        $regex = '/{block\s(.*?)}/i';
-        preg_match_all($regex, $data, $matches, PREG_SET_ORDER);
-
-        // no matches, do nothing
-        if ($matches) {
-            $manager = Yii::$app->big->blockManager;
-            $mapper = [];
-
-            // collect all block titles so blocks are loaded in one query
-            foreach ($matches as $match) {
-                $mapper[$match[0]] = $match[1];
-            }
-            $models = $manager->getModel()
-                ->find()
-                ->where(['title' => array_values($mapper), 'state' => Block::STATE_ACTIVE])
-                ->asArray()
-                ->all();
-
-            // update mapper with found blocks
-            foreach ($models as $model) {
-                $key = array_search($model['title'], $mapper);
-                $mapper[$key] = $manager->createBlockFromData($model);
-            }
-
-            // replace block include statements
-            foreach ($mapper as $statement => $block) {
-                // block is only an object if a block with the provided "title" is found. 
-                if (is_object($block)) {
-                    $content = $block->run();
-                } else {
-                    $content = '';
-                }
-                $data = preg_replace("|$statement|", addcslashes($content, '\\$'), $data, 1);
-            }
-        }
-        return $data;
     }
 }

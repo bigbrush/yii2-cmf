@@ -11,7 +11,6 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use bigbrush\cms\modules\pages\models\Page;
-use bigbrush\cms\widgets\Editor;
 
 /**
  * PageController
@@ -32,7 +31,6 @@ class PageController extends Controller
             throw new NotFoundHttpException("Page not found.");
         }
         Yii::$app->big->setTemplate($model->template_id);
-        $model->content = Editor::process($model->content);
         return $this->render('index', [
             'model' => $model,
         ]);

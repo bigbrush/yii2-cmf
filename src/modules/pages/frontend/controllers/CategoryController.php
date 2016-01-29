@@ -8,9 +8,9 @@
 namespace bigbrush\cms\modules\pages\frontend\controllers;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use bigbrush\cms\modules\pages\models\Page;
-use bigbrush\cms\widgets\Editor;
 
 /**
  * CategoryController
@@ -26,8 +26,8 @@ class CategoryController extends Controller
     public function actionPages($catid)
     {
         $category = Yii::$app->big->categoryManager->getItem($catid);
-        if (!empty($category->content)) {
-            $category->content = Editor::process($category->content);
+        if (!$category) {
+            throw new NotFoundHttpException("Category not found.");
         }
         Yii::$app->big->setTemplate($category->template_id);
         $pages = Page::find()
@@ -36,9 +36,6 @@ class CategoryController extends Controller
             ->orderBy('created_at')
             ->asArray()
             ->all();
-        foreach ($pages as &$page) {
-            $page['content'] = Editor::process($page['content']);
-        }
         return $this->render('pages', [
             'category' => $category,
             'pages' => $pages,

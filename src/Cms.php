@@ -40,7 +40,9 @@ class Cms extends Object implements BootstrapInterface
 
     /**
      * Bootstraps the Cms component.
-     * This methods runs after the application is configured.
+     * This method sets up Big Frameword by setting various properties. These properties can be
+     * overridden when using the classes.
+     * This method runs after the application has been configured.
      *
      * @param yii\base\Application $app the application currently running.
      */
@@ -63,9 +65,12 @@ class Cms extends Object implements BootstrapInterface
         // attach behavior to the application url manager
         Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
 
+        // set a default folder for plugins in the Cms
+        Yii::$container->set('bigbrush\big\core\PluginManager', [
+            'pluginsFolder' => '@bigbrush/cms/plugins',
+        ]);
+
         // if scope is "backend" set default base url in editor and file manager
-        // this way the widgets can be used without configuring them each time
-        // The properties can still be overridden when using the widgets
         if ($this->getIsBackend()) {
             $baseUrl = Url::to('@web/../');
             Yii::$container->set('bigbrush\cms\widgets\Editor', [
@@ -75,6 +80,9 @@ class Cms extends Object implements BootstrapInterface
                 'baseUrl' => $baseUrl,
             ]);
         }
+
+        // activate system plugins
+        $app->big->pluginManager->activateGroup('system');
     }
 
     /**
