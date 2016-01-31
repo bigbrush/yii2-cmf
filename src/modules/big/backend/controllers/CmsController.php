@@ -51,20 +51,6 @@ class CmsController extends Controller
             return $this->render('index');
         }
     }
-
-    /**
-     * Searches the Cms.
-     *
-     * @param string $q the query string to search for.
-     * @return string the rendering result.
-     */
-    public function actionSearch($q)
-    {
-        return $this->render('search', [
-            'searchValue' => $q,
-            'results' => BigSearch::search($q),
-        ]);
-    }
     
     /**
      * Remembers whether the menu is collapsed.

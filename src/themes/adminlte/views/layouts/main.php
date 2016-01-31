@@ -134,17 +134,6 @@ $this->registerJs('
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
-
-          <!-- search form (Optional) -->
-          <?= Html::beginForm(['/big/cms/search'], 'get', ['class' => 'sidebar-form']) ?>
-            <div class="input-group">
-              <?= Html::textInput('q', '', ['class' => 'form-control', 'placeholder' => Yii::t('cms', 'Search...')]) ?>
-              <span class="input-group-btn">
-                <?= Html::submitButton('<i class="fa fa-search"></i>', ['id' => 'search-btn', 'class' => 'btn btn-flat']) ?>
-              </span>
-            </div>
-          <?= Html::endForm() ?>
-          <!-- /.search form -->
           <?php endif; ?>
 
           <!-- Sidebar Menu -->
