@@ -5,7 +5,7 @@
  * @license http://www.bigbrush-agency.com/license/
  */
 
-namespace bigbrush\cms\modules\pages\components;
+namespace bigbrush\cms\modules\pages\widgets;
 
 use yii\web\AssetBundle;
 

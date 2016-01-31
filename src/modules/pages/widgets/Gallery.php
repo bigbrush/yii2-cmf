@@ -11,7 +11,6 @@ use ReflectionClass;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
-use bigbrush\cms\modules\pages\components\GalleryAsset;
 
 /**
  * Gallery
