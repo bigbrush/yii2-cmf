@@ -24,12 +24,6 @@ class PageFinder
      */
     public static function onSearch($event)
     {
-        // enable url creation from backend to frontend
-        // not required - but if url rule is registered url creation will work properly when searching in the Cms backend
-        if (Yii::$app->cms->isBackend) {
-            Yii::$app->cms->urlManager->rules = UrlRule::className();
-        }
-
         $query = Page::find()->select(['id', 'title', 'category_id', 'alias', 'content', 'created_at'])->orderBy('title')->asArray();
         // adjust query if $event->value is not empty. Then a search for a specific value is being made.
         if (!empty($event->value)) {
