@@ -14,7 +14,7 @@ $type = Yii::t('cms', 'page');
 $title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
 $this->title = $title;
 
-$url = Yii::$app->getUrlManager()->createUrlFrontend(Route::page($model, '/'));
+$url = Yii::$app->getUrlManager()->createUrlFrontend(Route::page($model));
 $toolbar = Yii::$app->toolbar;
 $toolbarBtn = Html::a($toolbar->createText('eye', Yii::t('cms', 'Go to page')), $url, $toolbar->createButtonOptions(['target' => '_blank']));
 ?>
