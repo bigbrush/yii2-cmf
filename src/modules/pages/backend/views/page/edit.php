@@ -5,18 +5,24 @@
  * @license http://www.bigbrush-agency.com/license/
  */
 
+use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Tabs;
+use bigbrush\cms\modules\pages\components\Route;
 
 $type = Yii::t('cms', 'page');
 $title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
 $this->title = $title;
+
+$url = Yii::$app->getUrlManager()->createUrlFrontend(Route::page($model, '/'));
+$toolbar = Yii::$app->toolbar;
+$toolbarBtn = Html::a($toolbar->createText('eye', Yii::t('cms', 'Go to page')), $url, $toolbar->createButtonOptions(['target' => '_blank']));
 ?>
 
 <?php
 $form = ActiveForm::begin();
 
-Yii::$app->toolbar->save()->saveStay()->back();
+$toolbar->save()->saveStay()->back()->addButton($toolbarBtn);
 
 $items = [
     [

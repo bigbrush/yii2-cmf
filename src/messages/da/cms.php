@@ -78,6 +78,7 @@ return [
     'Filter by category' => 'Filtrer på kategori',
     'Font awesome icon' => 'Font awesome ikon',
     'Frontend' => 'Frontend',
+    'Go to page' => 'Se side',
     'INSERT_BLOCK_TITLE' => 'INDÆT_BLOK_TITEL',
     'Icon' => 'Ikon',
     'Id' => 'Id',

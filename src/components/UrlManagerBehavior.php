@@ -8,7 +8,6 @@
 namespace bigbrush\cms\components;
 
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\base\Behavior;
 
 /**
@@ -18,7 +17,7 @@ class UrlManagerBehavior extends Behavior
 {
     /**
      * @var yii\web\UrlManager the url manager.
-     * Used to create urls from backend to frontend and parse urls created by Big.
+     * Used to create urls from backend to frontend.
      */
     private $_urlManager;
 
@@ -33,6 +32,24 @@ class UrlManagerBehavior extends Behavior
     public function createUrlFrontend($params)
     {
         return $this->getUrlManager()->createUrl($params);
+    }
+
+    /**
+     * Creates an internal url by Big.
+     * If a $dynamicUrl is true the string "index.php?r=" is prepended to the url.
+     * Urls created with this method will automatically be SEO optimized by Big. Interal urls
+     * are intended to be saved in the database and displayed in the frontend. Big will
+     * only parse urls in the frontend.
+     *
+     * @param string|array $route use a string to represent a route (e.g. `site/index`),
+     * or an array to represent a route with query parameters (e.g. `['site/index', 'param1' => 'value1']`).
+     * @param boolean $dynamicUrl if true the url will have "index.php?r" prepended. Defaults to true.
+     * @return string the internal url
+     * @see parseInternalUrl()
+     */
+    public function createInternalUrl($route, $dynamicUrl = true)
+    {
+        return Yii::$app->big->urlManager->createInternalUrl($url);
     }
 
     /**
@@ -56,10 +73,21 @@ class UrlManagerBehavior extends Behavior
     {
         if ($this->_urlManager === null) {
             $config = require(Yii::getAlias('@app/common/config/web.php'));
+            // create a big url manager directed at the frontend with url rules enabled
+            $bigUrlManager = Yii::createObject([
+                'class' => Yii::$app->big->urlManager->className(),
+                'enableUrlRules' => true,
+            ]);
+            // register frontend modules in Big url manager
+            foreach ($config['modules'] as $id => $className) {
+                $bigUrlManager->registerModule($id, $className);
+            }
+
+            // create a Yii url manager directed at the frontend and register Big url manager as a rule
             $config = $config['components']['urlManager'];
-            $config['class'] = 'yii\web\urlManager';
+            $config['class'] = isset($config['class']) ? $config['class'] : $this->owner->className();
             $config['baseUrl'] = '@web/../';
-            $config['rules'] = [Yii::$app->big->urlManager];
+            $config['rules'] = [$bigUrlManager];
             $this->_urlManager = Yii::createObject($config);
         }
         return $this->_urlManager;

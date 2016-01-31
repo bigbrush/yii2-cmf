@@ -63,7 +63,7 @@ class Cms extends Object implements BootstrapInterface
         Yii::$app->big->registerTranslations($config);
 
         // attach behavior to the application url manager
-        // Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
+        Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
 
         // set a default folder for plugins in the Cms
         Yii::$container->set('bigbrush\big\core\PluginManager', [
