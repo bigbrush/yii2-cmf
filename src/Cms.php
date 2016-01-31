@@ -63,7 +63,7 @@ class Cms extends Object implements BootstrapInterface
         Yii::$app->big->registerTranslations($config);
 
         // attach behavior to the application url manager
-        Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
+        // Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
 
         // set a default folder for plugins in the Cms
         Yii::$container->set('bigbrush\big\core\PluginManager', [
@@ -83,27 +83,6 @@ class Cms extends Object implements BootstrapInterface
 
         // activate system plugins
         $app->big->pluginManager->activateGroup('system');
-    }
-
-    /**
-     * Returns the toolbar.
-     * NOTE: NOT FULLY IMPLEMENTED - ONLY USED BY Big module in BlockController::actionEdit() in the view.
-     *
-     * @return cms\components\Toolbar a toolbar instance.
-     */
-    public function getToolbar()
-    {
-        return Yii::$app->toolbar;
-    }
-
-    /**
-     * Returns the Cms url manager.
-     *
-     * @return bigbrush\cms\components\UrlManger the url manager.
-     */
-    public function getUrlManager()
-    {
-        return Yii::$app->big->getUrlManager();
     }
 
     /**

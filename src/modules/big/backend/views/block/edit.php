@@ -42,7 +42,7 @@ $this->title = $title;
     /**
      * Add toolbar buttons automatically when no items has been added to the toolbar by the block.
      */
-    $toolbar = Yii::$app->cms->getToolbar();
+    $toolbar = Yii::$app->toolbar;
     if (empty($toolbar->items)) {
         $toolbar->save()->saveStay()->back();
     }
