@@ -52,8 +52,7 @@ class Editor extends BigEditor
     
     /**
      * Returns a default configuration array for the editor.
-     * This includes an extra menu item under "Insert" that inserts a block include statement. You should call [[process()]]
-     * when displaying content created with this editor.
+     * This includes an extra menu item under "Insert" that inserts a block include statement.
      *
      * @return array default editor configuration.
      */
