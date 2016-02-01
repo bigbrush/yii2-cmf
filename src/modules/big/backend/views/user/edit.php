@@ -10,6 +10,15 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Modal;
 use bigbrush\big\widgets\filemanager\FileManager;
 
+$this->registerJs('
+    $(\'[data-toggle="tooltip"]\').tooltip();
+');
+
+$tooltipOptions = [
+    'toggle' => 'tooltip',
+    'placement' => 'right',
+];
+
 $type = Yii::t('cms', 'user');
 $title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
 $this->title = $title;
@@ -51,7 +60,7 @@ $this->registerJs('
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <?php $link = Html::a(Yii::t('cms', 'Change'), '#', [
                     'class' => 'btn btn-info btn-sm',
@@ -65,6 +74,18 @@ $this->registerJs('
                 <img id="avatar-image" src="<?= empty($model->avatar) ? '' : Yii::getAlias('@web') . '/../' . $model->avatar; ?>" >
             </div>
         </div>
+        <?php if ($model->id) : ?>
+        <div class="col-md-6">
+            <fieldset>
+                <legend><?= Yii::t('cms', 'User management') ?></legend>
+                <?= $form->field($model, 'reset_password')->dropDownList([0 => Yii::t('cms', 'No'), 1 => Yii::t('cms', 'Yes')])->label($model->getAttributeLabel('reset_password'), [
+                    'data' => $tooltipOptions + [
+                        'title' => Yii::t('cms', 'Whether to reset the user password. An email will be sent to the user.'),
+                    ]
+                ]) ?>
+            </fieldset>
+        </div>
+        <?php endif; ?>
     </div>
 
 <?php ActiveForm::end(); ?>
