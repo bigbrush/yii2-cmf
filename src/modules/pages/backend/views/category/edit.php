@@ -8,6 +8,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Tabs;
+use bigbrush\cms\modules\pages\components\Route;
 
 $type = Yii::t('cms', 'category');
 $title = $model->id ? Yii::t('cms', 'Edit {0}', $type) : Yii::t('cms', 'Create {0}', $type);
@@ -16,11 +17,22 @@ $this->title = $title;
 if (!$model->getIsNewRecord()) {
     $title .= ' <span class="small">[ ' . $model->title . ' ]</span>';
 }
+
+$toolbar = Yii::$app->toolbar;
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
     
-    <?php Yii::$app->toolbar->save()->saveStay()->back(); ?>
+    <?php
+    $toolbar->save()->saveStay()->back();
+    if (!$model->getIsNewRecord()) {
+        $url = Yii::$app->getUrlManager()->createUrlFrontend(Route::category($model));
+        $toolbar->addButton(Html::a(
+            $toolbar->createText('eye', Yii::t('cms', 'Go to category')),
+            $url,
+            $toolbar->createButtonOptions(['target' => '_blank'])
+        ));
+    } ?>
 
     <h1><?= $title ?></h1>
     

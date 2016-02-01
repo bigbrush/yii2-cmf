@@ -79,6 +79,7 @@ return [
     'Font awesome icon' => 'Font awesome ikon',
     'Frontend' => 'Frontend',
     'Go to page' => 'Se side',
+    'Go to category' => 'Se kategori',
     'INSERT_BLOCK_TITLE' => 'INDÆT_BLOK_TITEL',
     'Icon' => 'Ikon',
     'Id' => 'Id',
