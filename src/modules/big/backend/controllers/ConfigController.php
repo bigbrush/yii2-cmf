@@ -91,7 +91,9 @@ class ConfigController extends Controller
     }
 
     /**
+     * Returns the config manager used in this controller.
      *
+     * @return bigbrush\big\core\ConfigManager a config manager.
      */
     public function getManager()
     {
