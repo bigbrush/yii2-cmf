@@ -315,7 +315,7 @@ class CmsController extends MigrateController
             'password' => $this->password,
             'charset' => $this->charset,
         ]);
-        $file = $this->getConfigFile('db', false);
+        $file = Yii::getAlias($this->configPath . '/db.php');
         file_put_contents($file, $content);
 
         // create "admin.php" config file.
@@ -323,8 +323,7 @@ class CmsController extends MigrateController
             'language' => $this->language,
             'cookieValidationKey' => $this->createRandomString(),
         ]);
-        // $file = Yii::getAlias($this->configPath . '/admin.php');
-        $file = $this->getConfigFile('admin', false);
+        $file = Yii::getAlias($this->configPath . '/admin.php');
         file_put_contents($file, $content);
         
         // create "web.php" config file.
@@ -332,8 +331,7 @@ class CmsController extends MigrateController
             'language' => $this->language,
             'cookieValidationKey' => $this->createRandomString(),
         ]);
-        // $file = Yii::getAlias($this->configPath . '/web.php');
-        $file = $this->getConfigFile('web', false);
+        $file = Yii::getAlias($this->configPath . '/web.php');
         file_put_contents($file, $content);
     }
 
