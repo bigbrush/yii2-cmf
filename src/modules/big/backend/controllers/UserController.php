@@ -35,14 +35,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionTest($id)
-    {
-        $model = $this->getModel($id);
-        return $this->render('email_reset_password_html', [
-            'model' => $model,
-        ]);
-    }
-
     /**
      * Renders the edit view for a user.
      *
@@ -60,8 +52,9 @@ class UserController extends Controller
                 ];
                 Yii::$app->session->setFlash('success', Yii::t('cms', 'Password was reset successfully.'));
                 // compose email. Use the views render method so the theme is not rendered
+                $config = Yii::$app->big->configManager->getItems('cms');
                 Yii::$app->mailer->compose()
-                    ->setFrom('noreply@noreply.com')
+                    ->setFrom($config->get('systemEmail', 'noreply@noreply.com'))
                     ->setTo($model->email)
                     ->setSubject(Yii::t('cms', 'Your password has been reset at {site}', ['site' => Url::to('@web', true)]))
                     ->setTextBody($this->getView()->render('email_reset_password_text', $viewParams, $this))
