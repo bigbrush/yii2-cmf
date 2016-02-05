@@ -65,11 +65,6 @@ class Cms extends Object implements BootstrapInterface
         // attach behavior to the application url manager
         Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
 
-        // set a default folder for plugins in the Cms
-        Yii::$container->set('bigbrush\big\core\PluginManager', [
-            'pluginsFolder' => '@bigbrush/cms/plugins',
-        ]);
-
         // if scope is "backend" set default base url in editor and file manager
         if ($this->getIsBackend()) {
             $baseUrl = Url::to('@web/../');
@@ -80,6 +75,11 @@ class Cms extends Object implements BootstrapInterface
                 'baseUrl' => $baseUrl,
             ]);
         }
+
+        // set a default folder for plugins in the Cms
+        Yii::$container->set('bigbrush\big\core\PluginManager', [
+            'pluginsFolder' => '@bigbrush/cms/plugins',
+        ]);
 
         // activate system plugins
         $app->big->pluginManager->activateGroup('system');
