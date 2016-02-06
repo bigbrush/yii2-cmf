@@ -86,7 +86,7 @@ class Plugin extends BasePlugin
             }
         }
 
-        // reassign the content to the event
+        // reassign the response data
         Yii::$app->getResponse()->data = $data;
     }
 }
