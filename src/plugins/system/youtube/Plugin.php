@@ -56,11 +56,11 @@ class Plugin extends BasePlugin
         {
             foreach($matches as $match)
             {
-                $videoId = $match[1];
-                $replacement = '<iframe width="560" height="315"
-                                src="//www.youtube.com/embed/'.$videoId.'"
+                $videoId = trim($match[1]);
+                $replacement = '<div class="video-wrapper">
+                                <iframe width="560" height="315" src="//www.youtube.com/embed/'.$videoId.'"
                                 frameborder="0"
-                                allowfullscreen></iframe>';
+                                allowfullscreen></iframe></div>';
                 $data = preg_replace("|$match[0]|", $replacement, $data);
             }
         }
