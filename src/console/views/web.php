@@ -25,6 +25,7 @@ $config = [
         'cms',
     ],
     'modules' => [
+        'big' => ['class' => 'bigbrush\cms\modules\big\frontend\Module'],
         'pages' => ['class' => 'bigbrush\cms\modules\pages\frontend\Module'],
     ],
     'components' => [
@@ -71,6 +72,9 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+        ],
+        'errorHandler' => [
+            'errorAction' => 'big/cms/error',
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
