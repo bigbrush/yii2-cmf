@@ -31,6 +31,7 @@ return [
     'Select a link' => 'Vælg et link',
     'Select media' => 'Vælg medie',
     'Menus' => 'Menuer',
+    'Page not found' => 'Side ikke fundet',
     
     /**
      * Models
