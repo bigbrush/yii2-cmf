@@ -49,7 +49,7 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
             'tableOptions' => ['class' => 'table'],
             'columns' => [
                 [
-                    'header' => Yii::t('cms', 'Key'),
+                    'header' => Yii::t('cms', 'Name'),
                     'format' => 'raw',
                     'options' => ['style' => 'width: 20%;'],
                     'value' => function ($data) {
