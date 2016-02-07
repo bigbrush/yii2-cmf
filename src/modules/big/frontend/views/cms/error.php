@@ -6,7 +6,6 @@
  */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /* @var $exception \yii\web\HttpException|\Exception */
 /* @var $handler \yii\web\ErrorHandler */
