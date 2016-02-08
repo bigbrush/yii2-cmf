@@ -17,7 +17,7 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
         <h1><?= $this->title ?></h1>
     </div>
 </div>
-<?php $form = ActiveForm::begin(['action' => ['add', 'section' => $config->section], 'id' => 'add-config-form']); ?>
+<?php $form = ActiveForm::begin(['action' => ['show', 'section' => $config->section], 'id' => 'add-config-form']); ?>
     <div class="row">
         <div class="col-sm-1">
             <?= Html::submitButton(Yii::t('cms', 'Add'), ['class' => 'btn btn-default btn-sm']); ?>
@@ -62,7 +62,7 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
                     'value' => function ($data) {
                         $icon = '<i class="fa fa-save"></i>';
                         
-                        $html = Html::beginForm(['update', 'section' => $data['section']]);
+                        $html = Html::beginForm(['update', 'id' => $data['id'], 'section' => $data['section']]);
                         $html .= '<div class="input-group">';
                         $html .= '<span class="input-group-btn">';
                         $html .= Html::submitButton($icon, ['class' => 'btn btn-default btn-sm']);
@@ -87,7 +87,7 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
                         $fields[] = Html::hiddenInput('Config[value]', $data['value']);
                         $fields[] = Html::hiddenInput('Config[section]', $data['section']);
                         return DeleteButton::widget([
-                            'action' => ['delete', 'section' => $data['section']],
+                            'action' => ['delete', 'id' => $data['id'], 'section' => $data['section']],
                             'content' => implode("\n", $fields),
                             'options' => [
                                 'class' => 'btn btn-default btn-sm',
