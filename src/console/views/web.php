@@ -52,7 +52,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+            'suffix' => '/',
         ],
         'view' => [
             'theme' => [
