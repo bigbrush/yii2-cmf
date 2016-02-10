@@ -188,6 +188,12 @@ class m150530_182223_init extends Migration
             'created_at' => new Expression('NOW()'),
             'updated_at' => new Expression('NOW()'),
         ]);
+
+        // insert default config values for {{%page}}
+        $this->batchInsert('{{%config}}', ['id', 'value', 'section'], [
+            ['appName', 'Big Cms', 'cms'],
+            ['systemEmail', 'noreply@noreply.com', 'cms'],
+        ]);
     }
 
     public function down()
