@@ -99,7 +99,7 @@ class m150530_182223_init extends Migration
             'meta_title' => '',
             'meta_description' => '',
             'meta_keywords' => '',
-            'params' => '{"show_category_title":"0","show_category_content":"0","pages_pr_row":"1","show_page_dates":"0","show_page_content":"0","images":{"config":{"type":"fade","enableJs":"1","enableCss":"1"},"0":{"image":"","alt":"","link":""},"1":{"image":"","alt":"","link":""},"2":{"image":"","alt":"","link":""},"3":{"image":"","alt":"","link":""},"4":{"image":"","alt":"","link":""},"5":{"image":"","alt":"","link":""}}}',
+            'params' => '',
         ]);
         $this->insert('{{%category}}', [
             'id' => 2,
