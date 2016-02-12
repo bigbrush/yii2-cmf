@@ -13,10 +13,12 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\validators\StringValidator;
+use yii\helpers\HtmlPurifier;
 use yii\helpers\Json;
 use bigbrush\big\models\Template;
 use bigbrush\big\models\Category;
 use bigbrush\cms\models\User;
+use bigbrush\cms\models\EditorBehavior;
 
 /**
  * Page
@@ -24,6 +26,7 @@ use bigbrush\cms\models\User;
  * @property integer $id
  * @property string $title
  * @property string $alias
+ * @property string $intro_content
  * @property string $content
  * @property integer $category_id
  * @property integer $state
@@ -180,7 +183,11 @@ class Page extends ActiveRecord
     {
         return [
             [['title', 'category_id'], 'required'],
-            ['content', 'filter', 'filter' => '\yii\helpers\HtmlPurifier::process'],
+            ['content', 'filter', 'filter' => function($value) {
+                return HtmlPurifier::process($value, [
+                    'Attr.EnableID' => true,
+                ]);
+            }],
             ['state', 'default', 'value' => self::STATE_ACTIVE],
             ['state', 'in', 'range' => array_keys($this->getStateOptions())],
             [['meta_title', 'meta_description', 'meta_keywords', 'alias'], 'string', 'max' => 255],
@@ -212,6 +219,7 @@ class Page extends ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+            // handle images
             $params = $this->params;
             $params['images'] = $this->images;
             $this->params = Json::encode($params);
@@ -226,6 +234,7 @@ class Page extends ActiveRecord
      */
     public function afterFind()
     {
+        parent::afterFind();
         $this->params = Json::decode($this->params);
         if (isset($this->params['images'])) {
             $this->images = $this->params['images'];
@@ -246,6 +255,12 @@ class Page extends ActiveRecord
                 'slugAttribute' => 'alias',
                 'ensureUnique' => true,
                 'immutable' => true,
+            ],
+            [
+                'class' => EditorBehavior::className(),
+                'active' => Yii::$app->cms->isBackend,
+                'introAttribute' => 'intro_content',
+                'contentAttribute' => 'content',
             ],
         ];
     }

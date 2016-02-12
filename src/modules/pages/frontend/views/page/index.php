@@ -15,6 +15,7 @@ if (!empty($model->meta_keywords)) {
 }
 
 $images = $model->images;
+
 $options = [];
 if (isset($images['config'])) {
     $options = $images['config'];
@@ -33,6 +34,11 @@ if (isset($images['config'])) {
             <?php if ($model->params['show_title']) : ?>
             <h1><?= Html::encode($model->title) ?></h1>
             <?php endif; ?>
+
+            <?php if (isset($model->params['show_intro_content']) && $model->params['show_intro_content']) : ?>
+            <?= $model->intro_content ?>
+            <?php endif; ?>
+
             <?= $model->content ?>
         </div>
     </div>

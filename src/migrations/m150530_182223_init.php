@@ -19,6 +19,7 @@ class m150530_182223_init extends Migration
             'id' => Schema::TYPE_PK,
             'title' => Schema::TYPE_STRING . ' NOT NULL',
             'alias' => Schema::TYPE_STRING . ' NOT NULL',
+            'intro_content' => Schema::TYPE_TEXT . ' NOT NULL',
             'content' => Schema::TYPE_TEXT . ' NOT NULL',
             'category_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'state' => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 1',

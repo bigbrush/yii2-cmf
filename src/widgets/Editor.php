@@ -12,8 +12,8 @@ use yii\web\JsExpression;
 use bigbrush\big\widgets\editor\Editor as BigEditor;
 
 /**
- * Editor provides an editor that is setup specifically for Big Cms. An extra menu item is added
- * in the "Insert" submenu which can be used to insert block include statement.
+ * Editor provides an editor that is setup specifically for Big Cms. Two extra menu items are added
+ * in the "Insert" submenu which can be used to insert block include statement and a page break.
  *
  * Big Cms will automatically detect any include statements and insert block content. This
  * is done in the plugin [[bigbrush\cms\plugins\system\blockinclude\Plugin]].
@@ -41,10 +41,15 @@ class Editor extends BigEditor
         parent::init();
         // register css for the block button icon
         $this->getView()->registerCss('
-            #block-button .mce-i-insertblock:before {
+            .mce-i-insertblock:before {
                 content: "\f0c8";
                 font-family: FontAwesome;
                 font-size: 18px;
+            }
+            .mce-i-map-pin:before {
+                content: "\f276";
+                font-family: FontAwesome;
+                font-size: 16px;
             }
         ');
         $this->clientOptions = array_merge($this->clientOptions(), $this->clientOptions);
@@ -52,22 +57,63 @@ class Editor extends BigEditor
     
     /**
      * Returns a default configuration array for the editor.
-     * This includes an extra menu item under "Insert" that inserts a block include statement.
+     * This includes two extra menu items under "Insert". One that inserts a block include statement
+     * and one that inserts a "Read more" link. A custom css file is also registered by using the
+     * TinyMCE property "content_css". Finally two extra image format options are included in the "Format"
+     * menu: "Image left" and "Image right" which aligns an image right or left properly.
      *
      * @return array default editor configuration.
      */
     public function clientOptions()
     {
+        $contentCss = '';
         if ($this->skinUrl === null) {
             $bundle = EditorSkinAsset::register($this->getView());
             $this->skinUrl = $bundle->baseUrl;
+            $contentCss = $this->skinUrl . '/' . $this->skin . '/bigcms_styles.css';
         }
     	return [
             'skin_url' => $this->skinUrl . '/' . $this->skin,
             'skin' => $this->skin,
+            'content_css' => $contentCss,
+            'style_formats_merge' => true,
+            'style_formats' => [
+                [
+                    'title' => Yii::t('cms', 'Image Left'),
+                    'selector' => 'img',
+                    'styles' => [
+                        'float' => 'left',
+                        'margin' => '0 10px 10px 0',
+                    ]
+                ],
+                [
+                    'title' => Yii::t('cms', 'Image right'),
+                    'selector' => 'img',
+                    'styles' => [
+                        'float' => 'right',
+                        'margin' => '0 0 10px 10px',
+                    ]
+                ],
+            ],
             'plugins' => 'contextmenu advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu paste',
-            'toolbar' => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            'toolbar' => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image readmorebtn',
             'setup' => new JsExpression('function(editor) {
+                editor.addMenuItem("bigcmsreadmore", {
+                    text: "' . Yii::t('cms', 'Read more') . '",
+                    icon: "map-pin",
+                    context: "insert",
+                    prependToContext: true,
+                    onclick: function() {
+                        if (editor.getContent().match(/<hr\s+id=("|\\\')system-readmore("|\\\')\s*\/*>/i))
+                        {
+                            alert("' . Yii::t('cms', "There is already one 'Read more' link in the editor. Only one is allowed.") . '");
+                            return false;
+                        } else {
+                            editor.insertContent("<hr id=\"system-readmore\" /> ");
+                        }
+                    }
+                });
+
                 editor.addMenuItem("insertblock", {
                     text: "' . Yii::t('cms', 'Block') . '",
                     icon: "insertblock",

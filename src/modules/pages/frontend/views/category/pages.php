@@ -6,21 +6,28 @@
  */
 
 use yii\helpers\Html;
-use bigbrush\cms\modules\pages\components\Route;
 use bigbrush\cms\modules\pages\widgets\Gallery;
 
+// handle meta data
 $this->title = (!empty($category->meta_title) ? $category->meta_title : $category->title);
 $this->registerMetaTag(['name' => 'description', 'content' => $category->meta_description]);
 if (!empty($category->meta_keywords)) {
     $this->registerMetaTag(['name' => 'keywords', 'content' => $category->meta_keywords]);
 }
 
+// setup list of pages
 $params = $category->params;
 $chunks = array_chunk($pages, $params['pages_pr_row']);
 $class = 'col-md-' . 12 / $params['pages_pr_row'];
-$dateDisplayed = $params['show_page_dates'] ? $params['show_page_dates'] : false;
+$showPageInformation = $params['show_page_dates'] || (isset($params['show_page_editor_author']) && $params['show_page_editor_author']);
 
-$images = isset($category->params['images']) ? $category->params['images'] : [];
+// determine which type of view to render
+$viewType = '_';
+$viewType .= isset($params['category_type']) ? $params['category_type'] : 'blog';
+$viewType .= '.php';
+
+// prepare images for the gallery
+$images = isset($params['images']) ? $params['images'] : [];
 $options = [];
 if (isset($images['config'])) {
     $options = $images['config'];
@@ -43,20 +50,11 @@ if (isset($images['config'])) {
 
 <?php foreach ($chunks as $pages) : ?>
 <div class="row">
-    <?php foreach ($pages as $page) : ?>
-    <div class="<?= $class ?>">
-        <?php if ($dateDisplayed) : ?>
-        <div class="page-date">
-            <?= Yii::$app->getFormatter()->asDate($page[$dateDisplayed]) ?>
-        </div>
-        <?php endif; ?>
-
-        <?= Html::a(Html::encode($page['title']), Route::page($page, '/')) ?>
-        
-        <?php if ($category->params['show_page_content']) : ?>
-        <?= $page['content'] ?>
-        <?php endif; ?>
-    </div>
-    <?php endforeach; ?>
+    <?= $this->render($viewType, [
+        'wrapperClass' => $class,
+        'category' => $category,
+        'pages' => $pages,
+        'showPageInformation' => $showPageInformation,
+    ]) ?>
 </div>
 <?php endforeach; ?>

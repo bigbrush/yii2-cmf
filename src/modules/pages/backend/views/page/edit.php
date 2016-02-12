@@ -42,15 +42,15 @@ $items = [
         ]),
     ],
     [
-        'label' => Yii::t('cms', 'Seo'),
-        'content' => $this->render('_tab_seo', [
+        'label' => Yii::t('cms', 'Images'),
+        'content' => $this->render('_tab_images', [
             'model' => $model,
             'form' => $form
         ]),
     ],
     [
-        'label' => Yii::t('cms', 'Images'),
-        'content' => $this->render('_tab_images', [
+        'label' => Yii::t('cms', 'Seo'),
+        'content' => $this->render('_tab_seo', [
             'model' => $model,
             'form' => $form
         ]),

@@ -23,13 +23,11 @@ $this->registerJs('
     var curLink;
     $("document").ready(function(){
         $(".image-modal-btn").click(function(){
-            var imageId = $(this).data("image");
-            curImage = "page-images-" + imageId + "-image";
+            curImage = $(this).data("image");;
             $("#image-modal").modal();
         });
         $(".url-modal-btn").click(function(){
-            var imageId = $(this).data("image");
-            curLink = "page-images-" + imageId + "-link";
+            curLink = $(this).data("image");;
             $("#url-modal").modal();
         });
     });
@@ -45,7 +43,7 @@ for ($i = 0; $i < 6; $i++) {
                 <div class="input-group">
                     {input}
                     <span class="input-group-btn">
-                        <button class="btn btn-info btn-block image-modal-btn" data-toggle="modal" data-image="' . $i . '">
+                        <button class="btn btn-info btn-block image-modal-btn" data-toggle="modal" data-image="page-images-' . $i . '-image">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -56,7 +54,7 @@ for ($i = 0; $i < 6; $i++) {
 
     $html .= $form->field($model, 'images[' . $i . '][alt]')->label(Yii::t('cms', 'Alt'));
 
-    $html .=$form->field($model, 'images[' . $i . '][link]', [
+    $html .= $form->field($model, 'images[' . $i . '][link]', [
             'template' => '
             {label}
             <div class="form-group">
@@ -64,7 +62,7 @@ for ($i = 0; $i < 6; $i++) {
                 <div class="input-group">
                     {input}
                     <span class="input-group-btn">
-                        <button class="btn btn-info btn-block url-modal-btn" data-toggle="modal" data-image="' . $i . '">
+                        <button class="btn btn-info btn-block url-modal-btn" data-toggle="modal" data-image="page-images-' . $i . '-link">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -78,6 +76,54 @@ for ($i = 0; $i < 6; $i++) {
 
 $chunks = array_chunk($panels, 2);
 ?>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <?= $form->field($model, 'images[intro_image][image]', [
+                    'template' => '
+                        {label}
+                        <div class="form-group">
+                            {error}
+                            <div class="input-group">
+                                {input}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info btn-block image-modal-btn" data-toggle="modal" data-image="page-images-intro_image-image">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        '
+                ])->label(Yii::t('cms', 'Intro image')); ?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model, 'images[intro_image][alt]', [
+                    'template' => "{label}\n{error}\n{input}\n{hint}",
+                ])->label(Yii::t('cms', 'Alt')); ?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model, 'images[intro_image][link]', [
+                        'template' => '
+                        {label}
+                        <div class="form-group">
+                            {error}
+                            <div class="input-group">
+                                {input}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info btn-block url-modal-btn" data-toggle="modal" data-image="page-images-intro_image-link">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        '
+                ])->label(Yii::t('cms', 'Link')); ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="panel panel-default">
     <div class="panel-body">

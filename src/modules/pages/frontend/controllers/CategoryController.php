@@ -8,6 +8,7 @@
 namespace bigbrush\cms\modules\pages\frontend\controllers;
 
 use Yii;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use bigbrush\cms\modules\pages\models\Page;
@@ -30,12 +31,15 @@ class CategoryController extends Controller
             throw new NotFoundHttpException(Yii::t('cms', 'Category not found.'));
         }
         Yii::$app->big->setTemplate($category->template_id);
-        $pages = Page::find()
+        $pages = Page::find()->with(['author', 'editor'])
             ->byCategory($catid)
             ->byState(Page::STATE_ACTIVE)
             ->orderBy('created_at')
             ->asArray()
             ->all();
+        foreach ($pages as &$page) {
+            $page['params'] = Json::decode($page['params']);
+        }
         return $this->render('pages', [
             'category' => $category,
             'pages' => $pages,

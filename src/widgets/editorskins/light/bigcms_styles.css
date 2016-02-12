@@ -1,0 +1,10 @@
+/**
+ * Css file that can be used to style the BigCms editor (the "content_css" property of TinyMCE).
+ * This file styles the readmore <hr> that splits up the editor content.
+ */
+.mce-content-body hr#system-readmore {
+    border: 1px dotted red;
+    height: 10px;
+    background-color: white;
+    display: block;
+}
