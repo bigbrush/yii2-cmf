@@ -13,16 +13,13 @@ use bigbrush\cms\widgets\Editor;
     </div>
 </div>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $form->field($model, 'category_id')->dropDownList($categories) ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $form->field($model, 'template_id')->dropDownList($templates) ?>
     </div>
-    <div class="col-md-3">
-        <?= $form->field($model, 'params[show_intro_content]')->dropDownList([Yii::t('cms', 'No'), Yii::t('cms', 'Yes')])->label(Yii::t('cms', 'Show page intro')) ?>
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= $form->field($model, 'state')->dropDownList($model->getStateOptions()) ?>
     </div>
 </div>

@@ -42,6 +42,13 @@ $items = [
         ]),
     ],
     [
+        'label' => Yii::t('cms', 'Publishing'),
+        'content' => $this->render('_tab_publishing', [
+            'model' => $model,
+            'form' => $form
+        ]),
+    ],
+    [
         'label' => Yii::t('cms', 'Images'),
         'content' => $this->render('_tab_images', [
             'model' => $model,

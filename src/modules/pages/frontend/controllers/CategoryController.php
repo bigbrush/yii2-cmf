@@ -31,10 +31,15 @@ class CategoryController extends Controller
             throw new NotFoundHttpException(Yii::t('cms', 'Category not found.'));
         }
         Yii::$app->big->setTemplate($category->template_id);
+        $sortBy = 'created_at';
+        $params = $category->params;
+        if (isset($params['sort_by'])) {
+            $sortBy = $params['sort_by'] . ' ' . $params['sort_direction'];
+        }
         $pages = Page::find()->with(['author', 'editor'])
             ->byCategory($catid)
             ->byState(Page::STATE_ACTIVE)
-            ->orderBy('created_at')
+            ->orderBy($sortBy)
             ->asArray()
             ->all();
         foreach ($pages as &$page) {

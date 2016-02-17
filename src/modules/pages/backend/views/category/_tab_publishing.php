@@ -74,6 +74,20 @@ $categoryTypes = [
                             'editor' => Yii::t('cms', 'Editor'),
                         ])->label(Yii::t('cms', 'Show author/editor')) ?>
                     </div>
+                    <div class="col-md-3">
+                        <?= $form->field($model, 'params[sort_by]')->dropDownList([
+                            'title' => Yii::t('cms', 'Title'),
+                            'id' => Yii::t('cms', 'Id'),
+                            'created_at' => Yii::t('cms', 'Created date'),
+                            'updated_at' => Yii::t('cms', 'Updated date'),
+                        ])->label(Yii::t('cms', 'Sort by')) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $form->field($model, 'params[sort_direction]')->dropDownList([
+                            'ASC' => Yii::t('cms', 'Ascending'),
+                            'DESC' => Yii::t('cms', 'Descending'),
+                        ])->label(Yii::t('cms', 'Sort direction')) ?>
+                    </div>
                 </div>
             </div>
         </div>
