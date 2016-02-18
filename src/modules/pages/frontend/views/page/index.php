@@ -52,7 +52,7 @@ if (isset($images['config'])) {
             </div>
             <?php endif; ?>
 
-            <?php if (isset($model->params['show_intro_content']) && $model->params['show_intro_content']) : ?>
+            <?php if (!empty($model->intro_content) && isset($model->params['show_intro_content']) && $model->params['show_intro_content']) : ?>
             <?= $model->intro_content ?>
             <?php endif; ?>
 

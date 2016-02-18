@@ -13,7 +13,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\validators\StringValidator;
-use yii\helpers\HtmlPurifier;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 use bigbrush\big\models\Template;
@@ -184,11 +183,7 @@ class Page extends ActiveRecord
     {
         return [
             [['title', 'category_id'], 'required'],
-            ['content', 'filter', 'filter' => function($value) {
-                return HtmlPurifier::process($value, [
-                    'Attr.EnableID' => true,
-                ]);
-            }],
+            ['content', 'string'],
             ['state', 'default', 'value' => self::STATE_ACTIVE],
             ['state', 'in', 'range' => array_keys($this->getStateOptions())],
             [['meta_title', 'meta_description', 'meta_keywords', 'alias'], 'string', 'max' => 255],
@@ -278,9 +273,10 @@ class Page extends ActiveRecord
             ],
             [
                 'class' => EditorBehavior::className(),
-                'active' => Yii::$app->cms->isBackend,
                 'introAttribute' => 'intro_content',
                 'contentAttribute' => 'content',
+                'isEditing' => Yii::$app->cms->isBackend,
+                'purifyContent' => true,
             ],
         ];
     }

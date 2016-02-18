@@ -11,13 +11,15 @@ use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\helpers\HtmlPurifier;
 
 /**
  * EditorBehavior integrates functionality provided by [[bigbrush\cms\widgets\Editor]] with
  * an [[ActiveRecord]]. This behavior does 2 things:
  * 1. It splits up html text created with the editor into [[contentField]] and [[introField]] when
- * a "Readmore" <hr> tag is inserted. If the tag is not present in the editor content the field [[defaultField]]
- * is populated with the content.
+ * a "Readmore" <hr> tag is inserted. If a "Readmore" tag is not present the field [[introAttribute]]
+ * is populated with content of the [[contentAttribute]] while [[contentAttribute]] is populted with
+ * an empty string.
  *
  * This behavior reacts to the following events:
  *    - ActiveRecord::EVENT_BEFORE_INSERT
@@ -31,6 +33,15 @@ use yii\db\ActiveRecord;
  * 
  * ...
  * 
+ * public function rules()
+ * {
+ *      return [
+ *          ['contentAttribute', 'string'],
+ *      ];
+ * }
+ * 
+ * ...
+ * 
  * public function behaviors()
  * {
  *     return [
@@ -38,12 +49,15 @@ use yii\db\ActiveRecord;
  *             'class' => EditorBehavior::className(),
  *             'introAttribute' => 'THE ATTRIBUTE TO ASSIGN THE INTRO CONTENT',
  *             'contentAttribute' => 'THE ATTRIBUTE TO ASSIGN THE FULL CONTENT - WITHOUT THE INTRO CONTENT',
+ *             'isEditing' => TRUE WHEN DISPLAYING THE EDITOR FALSE WHEN DISPLAYING CONTENT CREATED WITH THE EDITOR,
+ *             'purifyContent' => 'TRUE WHEN HtmlPurifier SHOULD PROCESS "contentAttribute"',
  *         ],
  *     ];
  * }
  * 
  * ...
  * ~~~
+ * And then use "contentAttribute" in a form displaying the [[bigbrush\cms\widgets\Editor]] editor.
  * 
  * @property ActiveRecord $owner
  */
@@ -58,14 +72,15 @@ class EditorBehavior extends Behavior
      */
     public $contentAttribute;
     /**
-     * @var bool $active
+     * @var bool $isEditing defines whether this behavior will update [[owner]] in [[afterFind()]].
+     * Set this to true when displaying the editor (backend) and false when displaying the content (frontend).
      */
-    public $active = true;
+    public $isEditing = true;
     /**
-     * @var bool $asValidator defines whether this behavior will act as a validator for [[contentField]].
-     * If true the [[contentField]] will be processed by [[yii\helpers\HtmlPurifier]] before being saved.
+     * @var bool $purifyContent defines whether this behavior will purify [[contentAttribute]].
+     * If true [[contentAttribute]] will be purified by [[HtmlPurifier]] before [[owner]] is saved.
      */
-    public $asValidator = true;
+    public $purifyContent = false;
 
 
     /**
@@ -93,6 +108,11 @@ class EditorBehavior extends Behavior
     /**
      * Event handler for "beforeSave" in [[owner]].
      *
+     * Splits up [[contentAttribute]] if the following tag is present: <hr id="system-readmore" />.
+     * When present the content before the tag is assigned to [[introAttribute]] while the content
+     * after the tag is assigned to [[contentAttribute]]. If the tag is not present [[introAttribute]]
+     * is populated with the content and [[contentAttribute]] is empty an empty string.
+     *
      * @param yii\base\ModelEvent $event the event being triggered.
      */
     public function beforeSave($event)
@@ -100,11 +120,17 @@ class EditorBehavior extends Behavior
         $intro = $this->owner->getAttribute($this->introAttribute);
         $content = $this->owner->getAttribute($this->contentAttribute);
 
+        if ($this->purifyContent) {
+            $content = HtmlPurifier::process($content, [
+                'Attr.EnableID' => true, // needs to be set because the <hr> uses the id attribute
+            ]);
+        }
+
         $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
         $tagPos = preg_match($pattern, $content);
         if ($tagPos == 0) {
-            $intro = $this->owner->content;
-            $content = '';
+            $intro = '';
+            $content = $intro . $content;
         } else {
             list($intro, $content) = preg_split($pattern, $content, 2);
         }
@@ -116,22 +142,20 @@ class EditorBehavior extends Behavior
     /**
      * Event handler for "afterFind" in [[owner]].
      *
+     * Only runs when [[isEditing]] is true. If [[introAttribute]] is not empty [[contentAttribute]]
+     * will be prepended with [[introAttribute]] and a <hr id="system-readmore" /> tag.
+     *
      * @param yii\base\ModelEvent $event the event being triggered.
      */
     public function afterFind($event)
     {
-        if ($this->active) {
-            $intro = $this->owner->getAttribute($this->introAttribute);
-            $content = $this->owner->getAttribute($this->contentAttribute);
-            
-            if (trim($content) != '') {
+        $intro = $this->owner->getAttribute($this->introAttribute);
+        $content = $this->owner->getAttribute($this->contentAttribute);
+        if ($this->isEditing) {
+            if (trim($intro) != '') {
                 $content = $intro . "<hr id=\"system-readmore\" />" . $content;
-            } else {
-                $content = $intro;
+                $this->owner->setAttribute($this->contentAttribute, $content);
             }
-
-            $this->owner->setAttribute($this->contentAttribute, $content);
         }
     }
 }
-
