@@ -9,11 +9,11 @@ namespace bigbrush\cms\modules\pages\backend\controllers;
 
 use Yii;
 use yii\base\InvalidCallException;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\View;
 use yii\helpers\Url;
 use bigbrush\cms\modules\pages\models\Page;
+use bigbrush\cms\modules\pages\models\PageSearch;
 use bigbrush\cms\modules\pages\widgets\Gallery;
 
 /**
@@ -27,26 +27,29 @@ class PageController extends Controller
     /**
      * Lists all available pages
      *
+     * @param int $id optional id of a category to filter pages by.
+     * @param string $q optional search string to filter pages by.
      * @return string
      */
-    public function actionIndex($id = null)
+    public function actionIndex($id = null, $q = null)
     {
-        $query = Page::find()->with(['category']);
         if ($id === null) {
             $id = static::getActiveCategoryId();
         }
         static::setActiveCategoryId($id);
-        if ($id) {
-            $query->byCategory($id);
-        }
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+
+        $searchModel = new PageSearch();
+        $dataProvider = $searchModel->search([
+            'id' => $id,
+            'q' => $q,
         ]);
+
         $categories = Yii::$app->big->categoryManager->getDropDownList('pages', Yii::t('cms', 'Select category'));
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'categories' => $categories,
-            'activeCategory' => $id,
+            'searchModel' => $searchModel,
         ]);
     }
 

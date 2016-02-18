@@ -7,6 +7,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\bootstrap\ActiveForm;
 use bigbrush\cms\widgets\DeleteButton;
 
 Yii::$app->toolbar->add();
@@ -18,11 +19,16 @@ $this->title = Yii::t('cms', 'Pages');
         <h1><?= $this->title ?></h1>
 
         <div class="row">
-            <div class="col-md-4 col-md-offset-8">
-                <?= Html::beginForm([''], 'get') ?>
-                <?= Html::label(Yii::t('cms', 'Filter by category'), 'id', ['class' => 'control-label']) ?>
-                <?= Html::dropDownList('id', $activeCategory, $categories, ['class' => 'form-control', 'onchange' => 'this.form.submit()']) ?>
-                <?= Html::endForm() ?>
+            <div class="col-md-4">
+                <?php $form = ActiveForm::begin(['layout' => 'inline', 'method' => 'get', 'action' => ['/pages/page/index']]) ?>
+                <?= $form->field($searchModel, 'q', ['inputOptions' => ['name' => 'q']]) ?>
+                <?= Html::submitButton(Yii::t('cms', 'Search'), ['class' => 'btn btn-default']) ?>
+                <?php ActiveForm::end() ?>
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+                <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['/pages/page/index']]) ?>
+                <?= $form->field($searchModel, 'id', ['inputOptions' => ['name' => 'id', 'onchange' => 'this.form.submit()']])->dropDownList($categories)->label(false) ?>
+                <?php ActiveForm::end() ?>
             </div>
         </div>
 

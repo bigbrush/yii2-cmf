@@ -60,6 +60,13 @@ class Page extends ActiveRecord
         $this->params = ['show_title' => 1];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%page}}';
+    }
 
     /**
      * @inheritdoc
