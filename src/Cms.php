@@ -59,8 +59,6 @@ class Cms extends Object implements BootstrapInterface
             'basePath' => '@bigbrush/cms/messages',
         ];
         Yii::$app->i18n->translations['cms*'] = $config;
-        // override translations registered by Big
-        Yii::$app->big->registerTranslations($config);
 
         // attach behavior to the application url manager
         Yii::$app->getUrlManager()->attachBehavior('cmsUrlManagerBehavior', UrlManagerBehavior::className());
