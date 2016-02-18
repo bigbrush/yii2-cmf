@@ -137,7 +137,7 @@ class m150530_182223_init extends Migration
             'meta_description' => '',
             'meta_keywords' => '',
             'template_id' => 0,
-            'params' => '{"show_title":"1"}',
+            'params' => '{"show_intro_content":"0","show_dates":"0","show_editor_author":"0","show_title":"1","images":{"intro_image":{"image":"","alt":"","link":""},"config":{"type":"fade","enableJs":"1","enableCss":"1"},"0":{"image":"","alt":"","link":""},"1":{"image":"","alt":"","link":""},"2":{"image":"","alt":"","link":""},"3":{"image":"","alt":"","link":""},"4":{"image":"","alt":"","link":""},"5":{"image":"","alt":"","link":""}}}',
         ]);
         
         // insert a menu and a home menu item into menu table
@@ -168,7 +168,7 @@ class m150530_182223_init extends Migration
             'rgt' => 3,
             'depth' => 1,
             'is_default' => 1,
-            'meta_title' => '',
+            'meta_title' => 'welcome',
             'meta_description' => '',
             'meta_keywords' => '',
             'params' => '',
