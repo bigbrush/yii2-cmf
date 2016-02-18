@@ -15,7 +15,7 @@ use bigbrush\cms\widgets\Editor;
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <?= $form->field($model, 'content')->widget(Editor::className())->label(false) ?>
+                <?= $form->field($model, 'content')->widget(Editor::className(), ['useReadMore' => false])->label(false) ?>
             </div>
         </div>
 	</div>

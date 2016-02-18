@@ -31,6 +31,11 @@ class Editor extends BigEditor
      * @see http://www.tinymce.com/wiki.php/Configuration:skin_url
      */
     public $skinUrl;
+    /**
+     * @var bool $useReadMore if true the "insert" menu will contain an button to insert a "Read more"
+     * tag in the editor.
+     */
+    public $useReadMore = true;
 
 
     /**
@@ -70,8 +75,40 @@ class Editor extends BigEditor
         if ($this->skinUrl === null) {
             $bundle = EditorSkinAsset::register($this->getView());
             $this->skinUrl = $bundle->baseUrl;
-            $contentCss = $this->skinUrl . '/' . $this->skin . '/bigcms_styles.css';
+            if (is_file($bundle->basePath . '/' . $this->skin . '/bigcms_styles.css')) {
+                $contentCss = $this->skinUrl . '/' . $this->skin . '/bigcms_styles.css';
+            }
         }
+
+        $setup = '';
+        if ($this->useReadMore) {
+            $setup .= 'editor.addMenuItem("bigcmsreadmore", {
+                text: "' . Yii::t('cms', 'Read more') . '",
+                icon: "map-pin",
+                context: "insert",
+                prependToContext: true,
+                onclick: function() {
+                    if (editor.getContent().match(/<hr\s+id=("|\\\')system-readmore("|\\\')\s*\/*>/i))
+                    {
+                        alert("' . Yii::t('cms', "There is already one 'Read more' link in the editor. Only one is allowed.") . '");
+                        return false;
+                    } else {
+                        editor.insertContent("<hr id=\"system-readmore\" /> ");
+                    }
+                }
+            });';
+        }
+        $setup .= 'editor.addMenuItem("bigcmsinsertblock", {
+            text: "' . Yii::t('cms', 'Block') . '",
+            icon: "insertblock",
+            id: "block-button",
+            context: "insert",
+            prependToContext: true,
+            onclick: function() {
+                editor.insertContent("<div>{block ' . Yii::t('cms', 'INSERT_BLOCK_TITLE') . '}</div><p>&nbsp;</p>");
+            }
+        });';
+
     	return [
             'skin_url' => $this->skinUrl . '/' . $this->skin,
             'skin' => $this->skin,
@@ -98,33 +135,8 @@ class Editor extends BigEditor
             'plugins' => 'contextmenu advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu paste',
             'toolbar' => 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image readmorebtn',
             'setup' => new JsExpression('function(editor) {
-                editor.addMenuItem("bigcmsreadmore", {
-                    text: "' . Yii::t('cms', 'Read more') . '",
-                    icon: "map-pin",
-                    context: "insert",
-                    prependToContext: true,
-                    onclick: function() {
-                        if (editor.getContent().match(/<hr\s+id=("|\\\')system-readmore("|\\\')\s*\/*>/i))
-                        {
-                            alert("' . Yii::t('cms', "There is already one 'Read more' link in the editor. Only one is allowed.") . '");
-                            return false;
-                        } else {
-                            editor.insertContent("<hr id=\"system-readmore\" /> ");
-                        }
-                    }
-                });
-
-                editor.addMenuItem("insertblock", {
-                    text: "' . Yii::t('cms', 'Block') . '",
-                    icon: "insertblock",
-                    id: "block-button",
-                    context: "insert",
-                    prependToContext: true,
-                    onclick: function() {
-                        editor.insertContent("<div>{block ' . Yii::t('cms', 'INSERT_BLOCK_TITLE') . '}</div><p>&nbsp;</p>");
-                    }
-                });
-            }')
+                ' . $setup . '
+            }'),
         ];
     }
 }

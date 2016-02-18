@@ -40,7 +40,7 @@ $this->title = $title;
 
     <div class="row">
         <div class="col-md-12">
-            <?= $form->field($model, 'description')->widget(Editor::className()) ?>
+            <?= $form->field($model, 'description')->widget(Editor::className(), ['useReadMore' => false]) ?>
         </div>
     </div>
 

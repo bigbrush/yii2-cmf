@@ -27,7 +27,7 @@ use bigbrush\cms\widgets\Editor;
             </div>
         </div>
         
-        <?= $form->field($model, 'content')->widget(Editor::className()) ?>
+        <?= $form->field($model, 'content')->widget(Editor::className(), ['useReadMore' => false]) ?>
 
     </div>
 </div>
