@@ -94,6 +94,7 @@ return [
     'Go to homepage' => 'Gå til forsiden',
     'Go to page' => 'Se side',
     'Hi {name},' => 'Hej {name}',
+    'Home' => 'Forsiden',
     'INSERT_BLOCK_TITLE' => 'INDÆT_BLOK_TITEL',
     'Icon' => 'Ikon',
     'Id' => 'Id',
