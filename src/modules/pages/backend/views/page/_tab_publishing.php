@@ -27,7 +27,7 @@
                         ])->label(Yii::t('cms', 'Show date')) ?>
                     </div>
                     <div class="col-md-3">
-                        <?= $form->field($model, 'params[show_page_editor_author]')->dropDownList([
+                        <?= $form->field($model, 'params[show_editor_author]')->dropDownList([
                             0 => Yii::t('cms', 'No'),
                             'author' => Yii::t('cms', 'Author'),
                             'editor' => Yii::t('cms', 'Editor'),

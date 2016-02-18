@@ -14,6 +14,10 @@ if (!empty($model->meta_keywords)) {
     $this->registerMetaTag(['name' => 'keywords', 'content' => $model->meta_keywords]);
 }
 
+// setup page
+$params = $model->params;
+$showPageInformation = (isset($params['show_dates']) && $params['show_dates']) || (isset($params['show_editor_author']) && $params['show_editor_author']);
+
 $images = $model->images;
 
 $options = [];
@@ -33,6 +37,19 @@ if (isset($images['config'])) {
         <div id="content-wrap">
             <?php if ($model->params['show_title']) : ?>
             <h1><?= Html::encode($model->title) ?></h1>
+            <?php endif; ?>
+
+            <?php if ($showPageInformation) : ?>
+            <div class="page-info">
+                <ul>
+                    <?php if ($params['show_dates']) : ?>
+                    <li><?= '<i class="fa fa-pencil"></i> ' . Yii::$app->getFormatter()->asDate($model[$params['show_dates']]) ?></li>
+                    <?php endif; ?>
+                    <?php if (isset($params['show_editor_author']) && $params['show_editor_author']) : ?>
+                    <li><?= '<i class="fa fa-user"></i> ' . $model[$params['show_editor_author']]['name'] ?></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
             <?php endif; ?>
 
             <?php if (isset($model->params['show_intro_content']) && $model->params['show_intro_content']) : ?>

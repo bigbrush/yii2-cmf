@@ -202,6 +202,7 @@ class Page extends ActiveRecord
     /**
      * Validates the [[alias]] attributes. If another page with the same alias exists
      * the current alias will automatically be made unique by appending an incremental counter.
+     * Can't figure out how this is covered by SluggableBehavior.
      *
      * @param string $attribute the attribute currently being validated
      * @param mixed $params the value of the "params" given in the rule
@@ -210,7 +211,7 @@ class Page extends ActiveRecord
     {
         $alias = empty($this->alias) ? Inflector::slug($this->title) : $this->alias;
         $counter = 0;
-        while (($model = $this->findOne(['alias' => $alias])) !== null) {
+        while (($model = $this->findOne(['alias' => $alias])) !== null && $model->id != $this->id) {
             $counter++;
             $alias = $alias . '-' . $counter;
         }
@@ -269,13 +270,12 @@ class Page extends ActiveRecord
         return [
             TimestampBehavior::className(),
             BlameableBehavior::className(),
-            // [
-            //     'class' => SluggableBehavior::className(),
-            //     'attribute' => 'title',
-            //     'slugAttribute' => 'alias',
-            //     'ensureUnique' => true,
-            //     'immutable' => true,
-            // ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'title',
+                'slugAttribute' => 'alias',
+                'ensureUnique' => true,
+            ],
             [
                 'class' => EditorBehavior::className(),
                 'active' => Yii::$app->cms->isBackend,
