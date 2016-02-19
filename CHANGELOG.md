@@ -1,9 +1,14 @@
 CMF Change Log
 ==========================
 
-0.0.5 January XX, 2016
+0.0.5 February XX, 2016
 ------------------
+- Beta version
 - Enh: Pages module: A page and category can have up to 6 images attached and displayed as a simple gallery
+- Enh: Admin theme handled by Composer.
+- Enh: 2 system plugins implemented: "blockinclude" and "youtube".
+- Enh: Added "Read more" button to the editor
+- Alot of minor fixes and enhancements
 
 
 0.0.4 June 13, 2015
