@@ -11,7 +11,7 @@ use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use bigbrush\cms\modules\pages\models\Page;
 
-$models = Page::find()->orderBy('updated_at DESC')->limit(5)->asArray()->all();;
+$models = Page::find()->orderBy('updated_at')->limit(5)->asArray()->all();;
 $dataProvider = new ArrayDataProvider([
     'allModels' => $models,
 ]);
