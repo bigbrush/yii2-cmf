@@ -196,28 +196,8 @@ class Page extends ActiveRecord
             [['meta_title', 'meta_description', 'meta_keywords', 'alias'], 'string', 'max' => 255],
             ['template_id', 'integer'],
             ['params', 'each', 'rule' => ['string']],
-            ['alias', 'validateAlias'],
             ['images', 'validateImages'],
         ];
-    }
-
-    /**
-     * Validates the [[alias]] attributes. If another page with the same alias exists
-     * the current alias will automatically be made unique by appending an incremental counter.
-     * Can't figure out how this is covered by SluggableBehavior.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param mixed $params the value of the "params" given in the rule
-     */
-    public function validateAlias($attribute, $params)
-    {
-        $alias = empty($this->alias) ? Inflector::slug($this->title) : $this->alias;
-        $counter = 0;
-        while (($model = $this->findOne(['alias' => $alias])) !== null && $model->id != $this->id) {
-            $counter++;
-            $alias = $alias . '-' . $counter;
-        }
-        $this->alias = $alias;
     }
 
     /**
@@ -274,7 +254,7 @@ class Page extends ActiveRecord
             BlameableBehavior::className(),
             [
                 'class' => SluggableBehavior::className(),
-                'attribute' => 'title',
+                'attribute' => ['title', 'alias'],
                 'slugAttribute' => 'alias',
                 'ensureUnique' => true,
             ],
