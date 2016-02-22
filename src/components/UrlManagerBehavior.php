@@ -49,7 +49,7 @@ class UrlManagerBehavior extends Behavior
      */
     public function createInternalUrl($route, $dynamicUrl = true)
     {
-        return Yii::$app->big->urlManager->createInternalUrl($url);
+        return Yii::$app->big->urlManager->createInternalUrl($route, $dynamicUrl);
     }
 
     /**
