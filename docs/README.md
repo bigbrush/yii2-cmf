@@ -7,7 +7,7 @@ This guide is under development.
 ## Table of contents
 
 * [Introduction](introduction.md)
-* [Installation](installaling-big-cms.md)
+* [Installation](installing-big-cms.md)
 * [Backend guide](backend-guide.md)
 * [Frontend guide](frontend-guide.md)
 * [Themes](themes.md)

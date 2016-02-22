@@ -27,9 +27,19 @@ For more information on theming read the [guide on themes](themes.md).
 
 
 ## Blocks
+A block is a [Yii2 widget](http://www.yiiframework.com/doc-2.0/guide-structure-widgets.html) with one additional method. A block is
+considered as a building block in views.
 
+Big Cms comes installed with 4 blocks
+  - **Contact** displays dynamic contact forms.
+  - **Menu** displays bootstrap menus
+  - **Pages categories** displays a list of categories
+  - **Text** displays content created with a TinyMce editor.
 
 ## Plugins
+Plugins are used to inject custom code a certain execution points. Plugins are divided into groups which is assigned
+before the plugins are called.
 
+See the [guide on plugins](the-plugin-system.md) for more information.
 
 ## Configuration
