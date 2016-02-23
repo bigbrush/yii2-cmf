@@ -25,3 +25,17 @@ Using `Menu items` under `System` you can add backend menu items or change the e
 menu items are translated.
 
 By adding items to the backend menu you can easily implement your own modules with the backend of Big Cms.
+
+
+## How to login
+
+Go to http://www.YOURSITE.com/admin
+
+After Big Cms has installed you can login with the following credentials:
+
+~~~
+Username: bigadmin
+Password: bigadmin
+~~~
+
+**REMEMBER TO CHANGE USERNAME AND PASSWORD WHEN USING IN PRODUCTION**

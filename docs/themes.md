@@ -72,6 +72,34 @@ return [
 ~~~
 
 
+## Changing theme
+There are [4 config files](introduction.md#configuration) in Big Cms that controls the application.
+
+When changing the frontend theme the files `web.php` and `admin.php` needs to be updated.
+
+Update `web.php` like so:
+
+~~~php
+'view' => [
+    'theme' => [
+        'basePath' => '@app/themes/web', // <-- this line must match in admin.php
+        'baseUrl' => '@web/themes/web',
+    ],
+],
+~~~
+
+Update the `frontendTheme` property in `admin.php` to the `basePath` property from `web.php`:
+
+~~~php
+'big' => [
+    'class' => 'bigbrush\big\core\Big',
+    'frontendTheme' => '@app/themes/web', // <-- change this line
+    'searchHandlers' => [
+        ['bigbrush\cms\modules\pages\components\PageFinder', 'onSearch'],
+    ],
+],
+~~~
+
 ## Overriding Big Cms views
 
 As described in the Yii tutorial on [themes](http://www.yiiframework.com/doc-2.0/guide-output-theming.html)
@@ -104,6 +132,8 @@ application configuration:
 ],
 ...
 ~~~
+
+Remember to change `YOUR_THEME` to the name of your theme.
 
 After this change create a folder in your theme called `overrides`. In this folder create the folder `pages`
 and within `pages` create the folder `views`.
