@@ -70,7 +70,9 @@ class ProductController extends Controller
 }
 ~~~
 
-Just a basic controller loading a model from the database and displaying a page with it. Take note that we are using the `$slug` to load a page. This is relevant for creating the url rule later. We'll also cover the `setTemplate()` part in a bit.
+Just a basic controller loading a model from the database and displaying a page with it. Take note that we are using the
+`$slug` to load a page. This is relevant for creating the url rule later. We'll also cover the `setTemplate()` part in later in
+this tutorial.
 
 ## Product.php
 
@@ -82,7 +84,11 @@ Same goes for the view. It has no special content different from a Yii 2 view.
 
 ## UrlRule.php
 
-Now it gets a little more exiting, because the url rule gives you full control over urls in your module and it is automatically detected and activated by Big Cms. An url rule can extend any class but it must implement the `yii\web\UrlRuleInterface`. Here's is an example:
+Url rules gives you full control over urls in your module and it is automatically detected and activated by Big Cms. An url rule can extend any class but it must implement the `yii\web\UrlRuleInterface` interface.
+
+Note that the file must be named `UrlRule.php` for Big Cms to recognize it.
+
+Here's is an example:
 
 ~~~php
 use yii\base\Object;
@@ -119,6 +125,7 @@ class UrlRule extends Object implements UrlRuleInterface
 The `createUrl($manager, $route, $params)` method is called when you create urls in Yii. For instance when calling `Html::a('A link', ['/cart/product/show', 'slug' => 'page-one'])` the `$route` parameter is `'cart/product/show'` and `$params` is an array like `['slug' => 'page-one']`. 
 
 This enables us to determine whether this url rule should react to the route. For instance:
+
 ~~~php
 public function createUrl($manager, $route, $params)
 {
@@ -130,13 +137,20 @@ public function createUrl($manager, $route, $params)
 }
 ~~~
 
-If the route matches the structure of the urls of our module we return a custom url which uses our `slug`. Otherwise false is returned which tells Yii that this url rule can not be used for creating the url.
+If the route matches the structure of the urls in our module we return a custom url which uses the `slug`. Otherwise false is returned which tells Yii that this url rule can not be used for creating this url.
 
-Next is parsing of urls. This is done by Yii when the user tries to load a page (controller). Here's an example:
+Note that url rules are only called when the no menu items points to the desired route. This applies to `createUrl()` as
+well as `parseUrl()`.
+
+Next is url parsing. This is done when the user tries to load a page (controller). Here's an example:
+
 ~~~php
 public function parseRequest($manager, $request)
 {
+    // the path (url) currently requested
     $pathInfo = $request->getPathInfo();
+
+    // handle suffix - Big Cms uses a "/" as default
     $suffix = Yii::$app->getUrlManager()->suffix;
     if ($suffix !== null) {
         $pathInfo = substr($pathInfo, 0, -strlen($suffix));
@@ -144,11 +158,24 @@ public function parseRequest($manager, $request)
     
     // check that the requested path (url) starts with 'cart/'
     if (strpos($pathInfo, 'cart/') === 0) {
+        // $segments = ['cart', 'page-one'];
         $segments = explode('/', $pathInfo);
-        return ['cart/product/show', ['alias' => $segments[1]]];
+
+        return ['cart/product/show', ['slug' => $segments[1]]];
     }
     return false;
 }
 ~~~
 
-TO BE FINISHED...
+The url we created in `createUrl)()` was `cart/page-one`. Based on this we can determine whether the url relates to this module.
+If it does it starts with `cart/`. This is checked by the statement `strpos($pathInfo, 'cart/') === 0`. 
+
+`parseUrl()` needs to return an array like the following
+
+For more information on `parseUrl()` check the [Yii documentation on rule classes](http://www.yiiframework.com/doc-2.0/guide-runtime-routing.html#creating-rules).
+
+Also check out the `Pages` module of Big Cms. It has a more [complex UrlRule implemented](https://github.com/bigbrush/yii2-cmf/blob/master/src/modules/pages/frontend/UrlRule.php).
+
+
+## Implementing Big Cms templates
+
