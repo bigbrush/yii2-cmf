@@ -7,6 +7,7 @@ But let's go through an example to show how to integrate a module with Big Cms. 
 small part of a shopping cart - specifically the frontend part of a product page.
 
 First off, the file structure:
+
 ```
 cart
   |-- controllers
@@ -27,6 +28,7 @@ So let's start creating our shopping cart.
 We will use the namespace: `bigbrush\cart` for this tutorial. First off is the file `Module.php`
 
 ## Module.php
+
 ~~~php
 namespace bigbrush\cart;
 
@@ -41,6 +43,7 @@ class Module extends \yii\base\Module
 As you can see nothing special is going on here. Next is the product controller.
 
 ## ProductController.php
+
 ~~~php
 namespace bigbrush\cart\controllers;
 
@@ -70,12 +73,15 @@ class ProductController extends Controller
 Just a basic controller loading a model from the database and displaying a page with it. Take note that we are using the `$slug` to load a page. This is relevant for creating the url rule later. We'll also cover the `setTemplate()` part in a bit.
 
 ## Product.php
+
 The product model is a regular [Yii 2 ActiveRecord](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html). Please read the guide to create this part. But note that because we are using the slug to load a page in the controller this field should have the [unique validator](http://www.yiiframework.com/doc-2.0/yii-validators-uniquevalidator.html) attached as a validation rule.
 
 ## The View
+
 Same goes for the view. It has no special content different from a Yii 2 view.
 
 ## UrlRule.php
+
 Now it gets a little more exiting, because the url rule gives you full control over urls in your module and it is automatically detected and activated by Big Cms. An url rule can extend any class but it must implement the `yii\web\UrlRuleInterface`. Here's is an example:
 
 ~~~php

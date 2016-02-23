@@ -1,27 +1,40 @@
 # Themes
 
-Include statements can be added within a theme. Each include statement is a placeholder for a block position. A block position can
-contain multiple blocks.
+Big Cms adds dynamic functionality to [Yii2 themes](http://www.yiiframework.com/doc-2.0/guide-output-theming.html) by
+providing `include statements`. In Big Cms a theme is the foundation for any application (for backend and frontend).
+
+
+## Include statements <span id="include-statements"></span>
+
+Include statements should be added to a layout file of a theme. Each include statement is a placeholder for a block position. A block
+position can contain multiple blocks.
 
 To add a block position to a theme add the following:
 
 ```
 <big:block position="sidebar" />
 ```
+
 This adds the "sidebar" position to the theme. Blocks assigned to this position will be rendered by Big Cms right before
 Yii renders the page.
 
 
-## Templates - assigning blocks to positions
+## Assigning blocks to positions <span id="templates-assigning-blocks"></span>
+
 In the backend of Big Cms navigate to "Templates" using the main menu. Here you can manage and create templates. It enables you to
 select a specific layout for each template and assign blocks to positions by drag and drop.
 
-## Using a template
-In the backend of Big Cms navigate to "Content->Pages" using the main menu. Select or crete a page and select your template from
-the "Templates" drop down list.
 
-## Determining if a position is active
-You can determine whether a position is active in the active template like so (example uses Bootstrap to illustrate):
+## Using a template <span id="using-a-template"></span>
+
+In the backend of Big Cms navigate to "Content->Pages" using the main menu. Select or create a page and select your template from
+the "Templates" drop down list. This page will now be rendered with the template your select. Any page can have their own customized
+template.
+
+
+## Determining if a position is active <span id="is-position-active"></span>
+
+You can determine whether a position is active like so (example uses Bootstrap classes to illustrate):
 
 ~~~php
 <?php if (Yii::$app->big->isPositionActive('sidebar')) : ?>
@@ -37,3 +50,68 @@ You can determine whether a position is active in the active template like so (e
 </div>
 <?php endif; ?>
 ~~~
+
+Another way to handle this specific example is to create
+[nested layouts](http://www.yiiframework.com/doc-2.0/guide-structure-views.html#nested-layouts) as described
+in the Yii2 tutorial.
+
+## Theme specific block positions
+
+Big Cms looks for the file `positions.php` in the active theme to determine available theme positions. The
+file must return an array where the keys are position IDs and the values are position names.
+
+For instance:
+
+~~~php
+return [
+    'POSITION ID' => 'POSITION NAME',
+    'gallery' => 'Gallery',
+    'mainmenu' => 'Main menu',
+    ...
+];
+~~~
+
+
+## Overriding Big Cms views
+
+As described in the Yii tutorial on [themes](http://www.yiiframework.com/doc-2.0/guide-output-theming.html)
+the property `pathMap` of a [Yii2 theme](http://www.yiiframework.com/doc-2.0/yii-base-theme.html) can be
+used to replace view files.
+
+If you want to override view files of the Pages module with your own, add the following to the
+application configuration:
+
+~~~php
+...
+'view' => [
+    'theme' => [
+        'basePath' => '@app/themes/YOUR_THEME',
+        'baseUrl' => '@web/themes/YOUR_THEME',
+        'pathMap' => [
+        	// override layout
+            '@app/views' => '@app/themes/YOUR_THEME/views',
+
+            // override views of pages module
+            '@bigbrush/cms/modules/pages/frontend/views' => [
+            	// define override views
+                '@app/themes/YOUR_THEME/overrides/pages/views',
+
+                // define default views when no override exists
+                '@bigbrush/cms/modules/pages/frontend/views',
+            ],
+        ]
+    ],
+],
+...
+~~~
+
+After this change create a folder in your theme called `overrides`. In this folder create the folder `pages`
+and within `pages` create the folder `views`.
+
+In the `views` folder you can create views files that will replace the default view files of the Pages module.
+Or better yet copy the default view files and make the changes you need.
+
+Navigate to the folder: `vendor/bigbrush/cmf/src/modules/pages/frontend/views/` and copy the two folders
+`category` and `page` to your new `views` folder. Now you can change the default view files according to your specific needs.
+
+This example uses the `Pages` module but the implementation can be applied to any module.
