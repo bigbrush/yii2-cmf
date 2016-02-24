@@ -83,7 +83,7 @@ The product model is a regular [Yii 2 ActiveRecord](http://www.yiiframework.com/
 
 Same goes for the view. It has no special content different from a Yii 2 view.
 
-**Until now there's nothing different from a regular Yii2 rule**
+**Until now there's nothing different from a regular Yii2 module**
 
 From here we will start to integrate the module with Big Cms.
 
