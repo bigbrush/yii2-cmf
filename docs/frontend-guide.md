@@ -16,7 +16,7 @@ One template will be marked as default and cannot be deleted.
 For more information on themes and layouts read the [guide on themes](themes.md).
 
 
-## Creating a block
+## Using a block
 
 In the backend navigate to "Blocks" using the main menu. After Big Cms is installed 4 blocks are available:
 

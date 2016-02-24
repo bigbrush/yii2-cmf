@@ -55,10 +55,11 @@ Another way to handle this specific example is to create
 [nested layouts](http://www.yiiframework.com/doc-2.0/guide-structure-views.html#nested-layouts) as described
 in the Yii2 tutorial.
 
-## Theme specific block positions
+## Defining block positions
 
-Big Cms looks for the file `positions.php` in the active theme to determine available theme positions. The
-file must return an array where the keys are position IDs and the values are position names.
+Blocks positions are theme specific and defined by a php file. Big Cms looks for the file `positions.php` in the root directory
+of the active theme to determine available theme positions. The file must return an array where the keys are
+position IDs and the values are position names.
 
 For instance:
 
@@ -73,7 +74,7 @@ return [
 
 
 ## Changing theme
-There are [4 config files](introduction.md#configuration) in Big Cms that controls the application.
+There are [4 config files](introduction.md#configuration-) in Big Cms that controls the application.
 
 When changing the frontend theme the files `web.php` and `admin.php` needs to be updated.
 

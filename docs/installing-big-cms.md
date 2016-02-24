@@ -21,6 +21,6 @@ After the installion has finished go to http://YOURSITE.COM/admin/ and login wit
 
 ##Next steps
 
-[Dynamic themes](themes.md).
-[Backend guide](backend-guide.md)
-[Frontend guide](frontend-guide.md)
+  - [Dynamic themes](themes.md).
+  - [Backend guide](backend-guide.md)
+  - [Frontend guide](frontend-guide.md)
