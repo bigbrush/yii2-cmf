@@ -120,5 +120,56 @@ if ($event->paymentValid) {
 
 ## Configuring the PluginManager
 
+The `PluginManager` can be configured like any other manager in Big Cms. To set a default
+plugins folder do the following in the application configuration:
+
+~~~php
+return [
+   'id' => 'APPLICATION ID',
+   ...
+   'components' => [
+       'big' => [
+           'managers' => [
+             'pluginManager' => [
+                 'pluginsFolder' => '@app/shop/plugins',
+             ],
+           ],
+       ],
+       ...
+   ],
+];
+~~~
+
+You can also configure the manager on the fly given you the options to call plugins in
+third party modules:
+
+~~~php
+Yii::$app->big->pluginManager
+  ->setFolder('@app/shop/plugins')
+  ->setGroup('payment')
+  ->trigger('payment.validate'):
+~~~
+
+A third options is to implement the `yii\base\BootstrapInterface` in a class. With the bootstrap method
+you could set a default `pluginsFolder` like this:
+
+~~~php
+Yii::$container->set('bigbrush\big\core\PluginManager', [
+  'pluginsFolder' => '@bigbrush/cms/plugins',
+]);
+~~~
+
+This will set the `pluginsFolder` to a specific directory that is used wherever the `PluginManager` is used.
+The property can still be changed on the fly like shown earlier.
+
 
 ## Plugins used in Big Cms
+
+Big Cms comes with 2 default plugins:
+
+  1. Block include plugin
+  2. Youtube plugin
+
+Default plugins are located here: `vendor/bigbrush/yii2-cmf/src/plugins/`.
+
+They are both explained in the [The Editor guide](the-editor.md).
