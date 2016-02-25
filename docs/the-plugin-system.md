@@ -172,4 +172,4 @@ Big Cms comes with 2 default plugins:
 
 Default plugins are located here: `vendor/bigbrush/yii2-cmf/src/plugins/`.
 
-They are both explained in the [The Editor guide](the-editor.md).
+Read the [The Editor guide](the-editor.md) for examples on their usage.
