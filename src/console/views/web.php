@@ -19,7 +19,6 @@ $config = [
     'id' => 'Big',
     'basePath' => dirname(dirname(__DIR__)),
     'language' => '<?= $language ?>',
-    'layout' => 'column2',
     'bootstrap' => [
         'big',
         'cms',
