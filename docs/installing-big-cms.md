@@ -1,6 +1,6 @@
 # Installing Big Cms
 
-Big Cms in installed through Composer.
+Big Cms is installed through Composer.
 
 With Composer installed, you can install Big Cms by running the following commands under a Web-accessible folder:
 

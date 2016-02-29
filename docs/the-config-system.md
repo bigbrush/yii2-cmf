@@ -70,7 +70,7 @@ You can create your own config rules. A config rule can extend any class but it 
 
 A custom config rule which only accepts numeric config values, could look like the following:
 
-~~~
+~~~php
 namespace app\modules\mymodule\rules;
 
 use yii\base\Object;

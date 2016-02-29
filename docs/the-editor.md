@@ -6,7 +6,7 @@ items under the "Insert" menu and 2 extra formats under the "Format" menu.
 
 ## Usage <span id="usage"></span>
 
-~~~
+~~~php
 use bigbrush\cms\widgets\Editor;
 
 $form->field($model, 'content')->widget(Editor::className());
