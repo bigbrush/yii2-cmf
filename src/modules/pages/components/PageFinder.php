@@ -9,7 +9,6 @@ namespace bigbrush\cms\modules\pages\components;
 
 use Yii;
 use bigbrush\cms\modules\pages\models\Page;
-use bigbrush\cms\modules\pages\frontend\UrlRule;
 
 /**
  * PageFinder
@@ -24,7 +23,7 @@ class PageFinder
      */
     public static function onSearch($event)
     {
-        $query = Page::find()->select(['id', 'title', 'category_id', 'alias', 'content', 'created_at'])->orderBy('title')->asArray();
+        $query = Page::find()->select(['id', 'title', 'category_id', 'alias', 'intro_content', 'created_at'])->orderBy('title')->asArray();
         // adjust query if $event->value is not empty. Then a search for a specific value is being made.
         if (!empty($event->value)) {
             $query->orWhere(['like', 'title', $event->value]);
@@ -35,7 +34,7 @@ class PageFinder
             $event->addItem([
                 'title' => $item['title'],
                 'route' => Route::page($item),
-                'text' => substr($item['content'], 0, 100),
+                'text' => $item['intro_content'],
                 'date' => $item['created_at'],
                 'section' => Yii::t('cms', 'Pages'),
             ]);
@@ -52,7 +51,7 @@ class PageFinder
             $event->addItem([
                 'title' => str_repeat('- ', $item->depth - 1) . $item->title,
                 'route' => Route::category($item),
-                'text' => substr($item->content, 0, 100),
+                'text' => $item->content,
                 'date' => $item->created_at,
                 'section' => Yii::t('cms', 'Pages categories'),
             ]);
