@@ -34,8 +34,9 @@ class Block extends \bigbrush\big\core\Block
      */
     public function run()
     {
-        $menus = Yii::$app->big->menuManager->getItems($this->model->menu_id);
-        $items = $this->createDropDownMenu($menus);
+        $manager = Yii::$app->big->menuManager;
+        $items = $manager->getItems($this->model->menu_id);
+        $items = $manager->createDropDownMenu($items);
         if ($this->getIsNavbar()) {
             $navbarOptions = ['options' => $this->getNavbarOptions()];
             if (!empty($this->model->brand)) {
@@ -140,33 +141,5 @@ class Block extends \bigbrush\big\core\Block
     public function getIsNavbar()
     {
         return in_array($this->model->type, $this->model->getNavbarTypes());
-    }
-
-    /**
-     * Creates a drop down menu ready for [[yii\bootstrap\Nav]] and [[yii\widgets\Menu]].
-     *
-     * @param array list of menus to nest in an array.
-     * @return array nested array ready for a drop down menu.
-     */
-    public function createDropDownMenu(&$menus)
-    {
-        $items = [];
-        $active = Yii::$app->big->menuManager->getActive();
-        while (list($id, $menu) = each($menus)) {
-            $items[$id] = [
-                'label' => $menu->title,
-                'url' => $menu->getUrl(),
-                'active' => $menu->id == $active->id,
-                'visible' => $menu->getIsEnabled(),
-            ];
-            if ($menu->rgt - $menu->lft != 1) {
-                $items[$id]['items'] = $this->createDropDownMenu($menus);
-            }
-            $next = key($menus);
-            if ($next && $menus[$next]->depth != $menu->depth) {
-                return $items;
-            }
-        }
-        return $items;
     }
 }
