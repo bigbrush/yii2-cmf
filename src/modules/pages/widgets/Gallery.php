@@ -91,12 +91,15 @@ class Gallery extends Widget
         $view = $this->getView();
         $options = $this->options;
         $type = $options['type'];
+        
+        if ($type === static::TYPE_DISABLED) {
+            return;
+        }
+        
         $viewFile = 'gallery_' . $type;
         $bundle = GalleryAsset::register($view);
 
-        if ($type === static::TYPE_DISABLED) {
-            return;
-        } elseif ($type !== static::TYPE_PLAIN) {
+        if ($type !== static::TYPE_PLAIN) {
             if ($options['enableJs']) {
                 $bundle->js[] = 'js/' . $viewFile . '.js';
                 $view->registerJS('
