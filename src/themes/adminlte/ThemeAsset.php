@@ -18,10 +18,4 @@ class ThemeAsset extends AssetBundle
     public $css = [
         'css/theme.css',
     ];
-    // public $publishOptions = [
-    //     'forceCopy' => true,
-    //     'only' => [
-    //         'css/theme.css'
-    //     ]
-    // ];
 }
