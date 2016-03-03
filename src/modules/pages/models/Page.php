@@ -262,7 +262,6 @@ class Page extends ActiveRecord
                 'class' => EditorBehavior::className(),
                 'introAttribute' => 'intro_content',
                 'contentAttribute' => 'content',
-                'isEditing' => Yii::$app->cms->isBackend,
                 'purifyContent' => true,
             ],
         ];

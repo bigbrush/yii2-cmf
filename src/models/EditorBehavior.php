@@ -14,20 +14,20 @@ use yii\db\ActiveRecord;
 use yii\helpers\HtmlPurifier;
 
 /**
- * EditorBehavior integrates functionality provided by [[bigbrush\cms\widgets\Editor]] with
- * an [[ActiveRecord]]. This behavior does 2 things:
- * 1. It splits up html text created with the editor into [[contentField]] and [[introField]] when
- * a "Readmore" <hr> tag is inserted. If a "Readmore" tag is not present the field [[introAttribute]]
- * is populated with content of the [[contentAttribute]] while [[contentAttribute]] is populted with
- * an empty string.
+ * EditorBehavior integrates functionality provided by [[\bigbrush\cms\widgets\Editor]] with
+ * an `ActiveRecord`. This behavior does 2 things:
  *
+ *   1. It splits up editor content into [[introAttribute]] and [[contentAttribute]] when
+ *      a "Readmore" <hr> tag is inserted.
+ *   2. It purifies editor content with `HtmlPurifier` when [[purifyContent]] is `true`.
+ * 
  * This behavior reacts to the following events:
  *    - ActiveRecord::EVENT_BEFORE_INSERT
  *    - ActiveRecord::EVENT_BEFORE_UPDATE
  *    - ActiveRecord::EVENT_AFTER_FIND
  *
- * Usage:
  * In a model extending [[ActiveRecord]] add the following:
+ *
  * ~~~php
  * use bigbrush\cms\models\EditorBehavior;
  * 
@@ -47,9 +47,9 @@ use yii\helpers\HtmlPurifier;
  *     return [
  *         [
  *             'class' => EditorBehavior::className(),
- *             'introAttribute' => 'THE ATTRIBUTE TO ASSIGN THE INTRO CONTENT',
- *             'contentAttribute' => 'THE ATTRIBUTE TO ASSIGN THE FULL CONTENT - WITHOUT THE INTRO CONTENT',
- *             'isEditing' => TRUE WHEN DISPLAYING THE EDITOR FALSE WHEN DISPLAYING CONTENT CREATED WITH THE EDITOR,
+ *             'introAttribute' => 'ATTRIBUTE FOR INTRO CONTENT',
+ *             'contentAttribute' => 'ATTRIBUTE TO ASSIGN THE FULL CONTENT - WITHOUT THE INTRO CONTENT',
+ *             'isEditing' => TRUE WHEN USING THE EDITOR, FALSE WHEN DISPLAYING THE CONTENT,
  *             'purifyContent' => 'TRUE WHEN HtmlPurifier SHOULD PROCESS "contentAttribute"',
  *         ],
  *     ];
@@ -57,7 +57,21 @@ use yii\helpers\HtmlPurifier;
  * 
  * ...
  * ~~~
- * And then use "contentAttribute" in a form displaying the [[bigbrush\cms\widgets\Editor]] editor.
+ * 
+ * Form example:
+ * 
+ * ~~~php
+ * $form->field($model', 'contentAttribute')->widget(Editor::className());
+ * ~~~
+ * 
+ * If you use HtmlPurifier on [[contentAttribute]] by yourself `Attr.EnableID` must be `true`. Otherwise the readmore
+ * tag is removed. For instance:
+ * 
+ * ~~~php
+ * $content = HtmlPurifier::process($content, [
+ *     'Attr.EnableID' => true,
+ * ]);
+ * ~~~
  * 
  * @property ActiveRecord $owner
  */
@@ -73,9 +87,10 @@ class EditorBehavior extends Behavior
     public $contentAttribute;
     /**
      * @var bool $isEditing defines whether this behavior will update [[owner]] in [[afterFind()]].
-     * Set this to true when displaying the editor (backend) and false when displaying the content (frontend).
+     * Set this to true when using the editor (backend) and false when displaying the content (frontend).
+     * Defaults to [[\bigbrush\cms\Cms::getIsBackend()]].
      */
-    public $isEditing = true;
+    public $isEditing;
     /**
      * @var bool $purifyContent defines whether this behavior will purify [[contentAttribute]].
      * If true [[contentAttribute]] will be purified by [[HtmlPurifier]] before [[owner]] is saved.
@@ -102,6 +117,10 @@ class EditorBehavior extends Behavior
     {
         if ($this->introAttribute === null || $this->contentAttribute === null) {
             throw new InvalidConfigException("The properties 'introAttribute' and 'contentAttribute' must be set in " . get_class($this));
+        }
+
+        if ($this->isEditing === null) {
+            $this->isEditing = Yii::$app->cms->isBackend;
         }
     }
 
@@ -149,9 +168,9 @@ class EditorBehavior extends Behavior
      */
     public function afterFind($event)
     {
-        $intro = $this->owner->getAttribute($this->introAttribute);
-        $content = $this->owner->getAttribute($this->contentAttribute);
         if ($this->isEditing) {
+            $intro = $this->owner->getAttribute($this->introAttribute);
+            $content = $this->owner->getAttribute($this->contentAttribute);
             if (trim($intro) != '') {
                 $content = $intro . "<hr id=\"system-readmore\" />" . $content;
                 $this->owner->setAttribute($this->contentAttribute, $content);
