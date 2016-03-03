@@ -16,9 +16,11 @@ use bigbrush\big\models\Block;
  * It only runs when the Cms is in frontend scope.
  * 
  * An include statement looks like the following:
- * ~~~
+ * 
+ * ~~~html
  * {block Contact}
  * ~~~
+ * 
  * The first part (block) is required and the second part (Contact) is the title of a block.
  */
 class Plugin extends BasePlugin
@@ -76,7 +78,7 @@ class Plugin extends BasePlugin
             foreach ($matches as $match) {
                 $statement = $match[0];
                 $blockTitle = $match[1];
-                if (array_key_exists($blockTitle, $models)) {
+                if (isset($models[$blockTitle])) {
                     $block = $manager->createBlockFromData($models[$blockTitle]);
                     $content = $block->run();
                 } else {
