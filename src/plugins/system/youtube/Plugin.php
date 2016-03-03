@@ -15,9 +15,11 @@ use bigbrush\big\core\Plugin as BasePlugin;
  * include statements with embedded youtube videoes. It only runs when the Cms is in frontend scope.
  * 
  * An include statement looks like the following:
- * ~~~
+ * 
+ * ~~~html
  * {youtube xxxxx}
  * ~~~
+ * 
  * Where "xxxxx" equals a youtube video ID, like so: https://www.youtube.com/watch?v=xxxxx
  */
 class Plugin extends BasePlugin
