@@ -8,7 +8,6 @@
 namespace bigbrush\cms\blocks\pagescategories;
 
 use Yii;
-use yii\validators\Validator;
 use bigbrush\cms\blocks\pagescategories\components\ModelBehavior;
 use bigbrush\cms\modules\pages\models\Page;
 
