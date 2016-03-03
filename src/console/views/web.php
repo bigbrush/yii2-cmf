@@ -55,8 +55,8 @@ $config = [
         ],
         'view' => [
             'theme' => [
-                'basePath' => '@app/themes/web',
-                'baseUrl' => '@web/themes/web',
+                'basePath' => '@app/themes/parallax',
+                'baseUrl' => '@web/themes/parallax',
             ],
         ],
         'user' => [

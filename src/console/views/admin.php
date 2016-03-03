@@ -35,7 +35,7 @@ $config = [
         ],
         'big' => [
             'class' => 'bigbrush\big\core\Big',
-            'frontendTheme' => '@app/themes/web',
+            'frontendTheme' => '@app/themes/parallax',
             'searchHandlers' => [
                 ['bigbrush\cms\modules\pages\components\PageFinder', 'onSearch'],
             ],
