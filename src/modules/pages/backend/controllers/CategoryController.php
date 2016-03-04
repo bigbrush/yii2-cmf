@@ -22,13 +22,16 @@ class CategoryController extends BaseCategoryController
      * If no tree exists for the returned id one will automatically be created.
      * 
      * An example of the method body:
+     * 
      * ~~~php
      * return $this->module->id;
      * ~~~
      * 
      * Please note that if the categories are used in a block the active module could be different than
      * the module of this controller. In this case you need to provide the tree id directly.
+     * 
      * For instance:
+     * 
      * ~~~php
      * $categories = Yii::$app->big->categoryManager->getItems('YOUR_MODULE_ID');
      * ~~~

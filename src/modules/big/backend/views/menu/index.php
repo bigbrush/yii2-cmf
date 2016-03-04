@@ -38,18 +38,10 @@ $this->title = Yii::t('cms', 'Menus');
                         'contentOptions' => ['style' => 'text-align:center; vertical-align:middle;'],
                         'value' => function($data) {
                             $popover = [];
-                            $popover[] = '<div style="text-align: center;">';
                             $popover[] = '<p>' . Yii::t('cms', 'Are you sure to delete this menu?') . '</p>';
                             $popover[] = '<p><strong>' . Yii::t('cms', 'All menu items are removed as well!') . '</strong></p>';
-                            $popover[] = Html::submitButton('<i class="fa fa-check"></i>', [
-                                'class' => 'btn btn-success',
-                            ]);
-                            $popover[] = Html::hiddenInput('id', $data->id);
-                            $popover[] = '</div>';
-
                             return DeleteButton::widget([
                                 'model' => $data,
-                                'action' => ['delete', 'id' => $data->id],
                                 'options' => ['class' => 'btn-xs'],
                                 'title' => '<div style="text-align: center;"><strong>' . Yii::t('cms', 'Are you sure?')  . '</strong></div>',
                                 'content' => implode("\n", $popover),

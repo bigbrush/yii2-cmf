@@ -92,6 +92,7 @@ class PopoverButton extends Button
                 'trigger' => 'focus',
                 'html' => $this->useHtml,
                 'content' => $this->content,
+                'template' => '<div class="popover deletebtn-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
             ]
         ];
     }

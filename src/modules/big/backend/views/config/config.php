@@ -82,7 +82,6 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
                     'format' => 'raw',
                     'value' => function ($data) {
                         $fields = [];
-                        $fields[] = Html::submitButton('<i class="fa fa-check"></i>', ['class' => 'btn btn-success']);
                         $fields[] = Html::hiddenInput('Config[id]', $data['id']);
                         $fields[] = Html::hiddenInput('Config[value]', $data['value']);
                         $fields[] = Html::hiddenInput('Config[section]', $data['section']);

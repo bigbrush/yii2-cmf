@@ -13,28 +13,29 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
- * DeleteButton renders a bootstrap popover button with a form with the action of [[action]]. If action is not set
- * if defaults to ['delete', 'id' => $this->model['id']].
+ * DeleteButton renders a form with the action of [[action]] in a bootstrap popover. If [[action]] is not set
+ * if defaults to `['delete', 'id' => $this->model['id']]`.
  *
- * For example,
+ * For instance:
  *
  * ```php
  * echo DeleteButton::widget([
  *     'model' => $model,
  * ]);
  * ```
+ * 
+ * The `model` property can be a item returned from a Big manager - for instance [[\bigbrush\big\core\MenuManager]].
  *
  * @see http://getbootstrap.com/javascript/#popovers
  */
 class DeleteButton extends PopoverButton
 {
     /**
-     * @var array|yii\db\ActiveRecord a model used when rendering the form. Not relevant when [[action]] and
-     * [[content]] are set during widget configuration.
+     * @var array|ActiveRecord a model used to render a hidden form field within a form.
      */
     public $model;
     /**
-     * @var strint|array the action of the form rendered in the popover
+     * @var string|array action used in a form rendered in the popover.
      */
     public $action;
     /**
@@ -52,11 +53,7 @@ class DeleteButton extends PopoverButton
     /**
      * @var string the text for the popover button.
      */
-    public $popoverText = '<i class="fa fa-check"></i>';
-    /**
-     * @var array the options for the popover button.
-     */
-    public $popoverOptions = [];
+    public $btnText = '<i class="fa fa-check"></i>';
 
 
     /**
@@ -65,11 +62,12 @@ class DeleteButton extends PopoverButton
     public function init()
     {
         if ($this->model === null && $this->action === null && $this->content === null) {
-            throw new InvalidConfigException("The 'model' property must be set when using cms\widgets\DeleteButton.");
+            throw new InvalidConfigException("The 'model' property must be set in bigbrush\cms\widgets\DeleteButton.");
         }
+
         parent::init();
-        Html::addCssClass($this->options, $this->buttonClass);
         $this->useHtml = true;
+        Html::addCssClass($this->options, $this->buttonClass);
 
         if ($this->title === null) {
             $this->title = '<strong>' . Yii::t('cms', 'Sure?') . '</strong>';
@@ -83,32 +81,20 @@ class DeleteButton extends PopoverButton
      * Runs the widget.
      */
     public function run()
-    {
-        $popover = Html::beginForm($this->action);
-        if ($this->content === null) {
-            $popover .= $this->getFormFields();
-        } else {
+    {        
+        $popover = '';
+        $popover .= Html::beginForm($this->action);
+        if ($this->content) {
             $popover .= $this->content;
         }
+        $popover .= Html::submitButton($this->btnText, [
+            'class' => 'btn btn-success',
+        ]);
+        $popover .= Html::hiddenInput('id', $this->model['id']);
         $popover .= Html::endForm();
         
         $this->content = $popover;
 
         return parent::run();
-    }
-
-    /**
-     * Returns the default form fields used in the popover.
-     *
-     * @return string form fields as HTML.
-     */
-    public function getFormFields()
-    {
-        $fields = [];
-        $fields[] = Html::submitButton($this->popoverText, ArrayHelper::merge([
-            'class' => 'btn btn-success',
-        ], $this->popoverOptions));
-        $fields[] = Html::hiddenInput('id', $this->model['id']);
-        return implode("\n", $fields);
     }
 }

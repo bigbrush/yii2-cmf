@@ -14,7 +14,35 @@ use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\BootstrapPluginAsset;
 
 /**
- * RadioButtonGroup
+ * RadioButtonGroup renders a bootstrap button group with radio buttons which can be used in a form.
+ *
+ * Usage:
+ *
+ * ~~~php
+ * $form->field($model, 'attribute')->widget(RadioButtonGroup::className());
+ * ~~~
+ *
+ * Or by setting a specific name and value:
+ *
+ * ~~~php
+ * $form->field($model, 'attribute')->widget(RadioButtonGroup::className(), [
+ *     'name' => 'field_name',
+ *     'value' => 'field_value',
+ * ]);
+ * ~~~
+ *
+ * Registering custom buttons:
+ *
+ * ~~~php
+ * $form->field($model, 'attribute')->widget(RadioButtonGroup::className(), [
+ *     'buttons' => [
+ *         ['label' => 'Yes', 'value' => '1', 'options' => ['class' => 'btn btn-primary']]
+ *         ['label' => 'No', 'value' => '0', 'options' => ['class' => 'btn btn-primary']]
+ *     ],
+ * ]);
+ * ~~~
+ *
+ * One of the buttons will automatically be set as active. See 
  */
 class RadioButtonGroup extends InputWidget
 {
@@ -24,6 +52,7 @@ class RadioButtonGroup extends InputWidget
      *
      * - label: string, required, the label.
      * - value: string, required, the value.
+     * - options: array, optional, key => value array used as options for each label.
      *
      * Defaults to a "yes/no" button.
      */
@@ -35,14 +64,16 @@ class RadioButtonGroup extends InputWidget
 
 
     /**
-     * Initializes the widget.
+     * @inheritdoc
      */
     public function init()
     {
+        parent::init();
+
         if ($this->buttons === null) {
             $this->buttons = [
-                ['label' => Yii::t('cms', 'Yes'), 'value' => '1'],
-                ['label' => Yii::t('cms', 'No'), 'value' => '0'],
+                ['label' => Yii::t('cms', 'Yes'), 'value' => '1', 'options' => ['class' => 'btn btn-primary']],
+                ['label' => Yii::t('cms', 'No'), 'value' => '0', 'options' => ['class' => 'btn btn-primary']],
             ];
         }
     }
@@ -56,17 +87,23 @@ class RadioButtonGroup extends InputWidget
         $buttons = [];
         foreach ($this->buttons as $button) {
             if (is_array($button)) {
-                $labelOptions = 'btn ' . $this->buttonClass;
-                if ($this->model->$attribute == $button['value']) {
-                    $labelOptions .= ' active';
+                $name = $this->name ?: $this->model->{$this->attribute};
+                $value = isset($button['value']) ? $button['value'] : $this->value;
+                $checked = $value == $this->value;
+                $options = isset($button['options']) ? $button['options'] : [];
+                
+                if (!isset($options['class'])) {
+                    Html::addCssClass($options, 'btn btn-primary');
                 }
-                $buttons[] = Html::activeRadio($this->model, $this->attribute, [
-                    'value' => $button['value'],
+                if ($checked) {
+                    Html::addCssClass($options, 'active');
+                }
+
+                $buttons[] = Html::radio($name, $checked, [
                     'label' => $button['label'],
+                    'value' => $value,
                     'uncheck' => null, // removes hidden field
-                    'labelOptions' => [
-                        'class' => $labelOptions,
-                    ]
+                    'labelOptions' => $options,
                 ]);
             } else {
                 $buttons[] = $button;

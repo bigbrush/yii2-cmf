@@ -45,12 +45,13 @@ class Block extends \bigbrush\big\core\Block
                 // either flag form as posted in session or redirect to a page selected by the user
                 if (empty($this->model->redirectTo)) {
                     $session->set(self::SESSION_VAR_FORM_POSTED, 1);
-                    return Yii::$app->controller->refresh();
+                    Yii::$app->controller->refresh();
                 } else {
                     $url = Yii::$app->big->urlManager->parseInternalUrl($this->model->redirectTo);
                     $url = Yii::$app->getUrlManager()->createUrl($url);
-                    return Yii::$app->controller->redirect($url);
+                    Yii::$app->controller->redirect($url);
                 }
+                return;
             } else {
                 $session->setFlash('error', Yii::t('cms', 'Email not sent - please try again.'));
             }
