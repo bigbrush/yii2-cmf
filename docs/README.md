@@ -1,5 +1,7 @@
 # The definitive guide to Big CMS
 
+## Table of contents
+
 * [Introduction](introduction.md)
 * [Installation](installing-big-cms.md)
 * [Backend guide](backend-guide.md)
@@ -10,4 +12,4 @@
 * [The plugin system](the-plugin-system.md)
 * [The Editor](the-editor.md)
 * [The config system](the-config-system.md)
-* [Creating a module](https://github.com/bigbrush/yii2-cmf/blob/master/docs/creating-a-module.md)
+* [Creating a module](creating-a-module.md)
