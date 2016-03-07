@@ -8,11 +8,10 @@
 namespace bigbrush\cms\modules\big\backend\controllers;
 
 use Yii;
-use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\InvalidCallException;
 use yii\web\MethodNotAllowedHttpException;
-use bigbrush\cms\Cms;
+use bigbrush\cms\models\BlockSearch;
 
 /**
  * BlockController
@@ -22,14 +21,20 @@ class BlockController extends Controller
     /**
      * Shows a page with all created blocks.
      *
+     * @param string $q an optional search string that filters blocks by their title.
      * @return string the rendering result.
      */
-    public function actionIndex($scope = Cms::SCOPE_FRONTEND)
+    public function actionIndex($q = '')
     {
-        $manager = Yii::$app->big->blockManager;
-        $dataProvider = new ArrayDataProvider(['allModels' => $manager->getItems()]);
-        $installedBlocks = $manager->getInstalledBlocks(true); // only active
+        $installedBlocks = Yii::$app->big->blockManager->getInstalledBlocks(true); // only active
+        $scopes = Yii::$app->cms->getAvailableScopes();
+        $searchModel = new BlockSearch();
+        $dataProvider = $searchModel->search([
+            'q' => $q,
+        ]);
         return $this->render('index', [
+            'scopes' => $scopes,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'installedBlocks' => $installedBlocks,
         ]);
