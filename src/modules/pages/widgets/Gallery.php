@@ -84,8 +84,18 @@ class Gallery extends Widget
      */
     public function run()
     {
-        if (empty($this->images)) {
-            return;
+        // check whether minimum 1 image has been assigned.
+        $hasImage = false;
+        foreach ($this->images as $image) {
+            if (!empty($image['image'])) {
+                $hasImage = true;
+                break;
+            }
+        }
+
+        // no image - bail so Bootstrap assets are not loaded.
+        if (!$hasImage) {
+            return; 
         }
 
         $view = $this->getView();
