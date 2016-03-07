@@ -5,7 +5,7 @@ Big Cms is installed through Composer.
 With Composer installed, you can install Big Cms by running the following commands under a Web-accessible folder:
 
 ~~~
-composer create-project --prefer-dist --stability=dev bigbrush/yii2-bigcms bigcms
+composer create-project --prefer-dist bigbrush/yii2-bigcms bigcms
 cd bigcms
 yii cms/install
 ~~~
