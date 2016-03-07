@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.0 March 07, 2016
+------------------
+- Stable release
+
+
 0.0.5 February XX, 2016
 ------------------
 - Beta version
