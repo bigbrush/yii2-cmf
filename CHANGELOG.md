@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.1 October 08, 2016
+------------------
+- Bug#38: Contact Block now uses the Reponse component instead of the active controller when redirecting.
+
+
 1.0.0 March 07, 2016
 ------------------
 - Stable release
