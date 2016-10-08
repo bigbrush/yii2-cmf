@@ -42,24 +42,17 @@ class Block extends \bigbrush\big\core\Block
         $model->requiredFields = $this->model->getRequiredFields();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->validate()) {
             if ($this->sendEmail($model)) {
-                // either flag form as posted in session or redirect to a page selected by the user
                 if (empty($this->model->redirectTo)) {
-                    $session->set(self::SESSION_VAR_FORM_POSTED, 1);
-                    Yii::$app->controller->refresh();
+                    $session->setFlash('success', $this->model->successMessage);
+                    Yii::$app->getResponse()->redirect(Yii::$app->request->referrer);
                 } else {
                     $url = Yii::$app->big->urlManager->parseInternalUrl($this->model->redirectTo);
-                    $url = Yii::$app->getUrlManager()->createUrl($url);
-                    Yii::$app->controller->redirect($url);
+                    Yii::$app->getResponse()->redirect(Yii::$app->getUrlManager()->createUrl($url));
                 }
                 return;
             } else {
                 $session->setFlash('error', Yii::t('cms', 'Email not sent - please try again.'));
             }
-        }
-        // check the form has been posted. Done to ensure a redirect is done so form does not get posted twice.
-        if ($session->get(self::SESSION_VAR_FORM_POSTED)) {
-            $session->setFlash('success', $this->model->successMessage);
-            $session->set(self::SESSION_VAR_FORM_POSTED, null);
         }
         return $this->render('index', [
             'block' => $this,
