@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.2 November 24, 2016
+------------------
+- Bug#40: Plugins now handles all response types because it reacts to Response::EVENT_AFTER_PREPARE
+
+
 1.0.1 October 08, 2016
 ------------------
 - Bug#38: Contact Block now uses the Reponse component instead of the active controller when redirecting.
