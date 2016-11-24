@@ -8,6 +8,7 @@
 namespace bigbrush\cms\plugins\system\youtube;
 
 use Yii;
+use yii\web\Response;
 use bigbrush\big\core\Plugin as BasePlugin;
 
 /**
@@ -33,7 +34,7 @@ class Plugin extends BasePlugin
     {
         $app = Yii::$app;
         if ($app->cms->isFrontend) {
-            $app->on($app::EVENT_AFTER_REQUEST, [$this, 'process']);
+            $app->response->on(Response::EVENT_AFTER_PREPARE, [$this, 'process']);
         }
     }
 
@@ -45,7 +46,7 @@ class Plugin extends BasePlugin
      */
     public function process($event)
     {
-        $data = Yii::$app->getResponse()->data;
+        $data = Yii::$app->getResponse()->content;
 
         // simple performance check to determine whether further processing is required
         if (strpos($data, 'youtube') === false) {
@@ -67,7 +68,7 @@ class Plugin extends BasePlugin
             }
         }
 
-        // reassign the response data
-        Yii::$app->getResponse()->data = $data;
+        // reassign the response content
+        Yii::$app->getResponse()->content = $data;
     }
 }

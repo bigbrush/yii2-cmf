@@ -8,6 +8,7 @@
 namespace bigbrush\cms\plugins\system\blockinclude;
 
 use Yii;
+use yii\web\Response;
 use bigbrush\big\core\Plugin as BasePlugin;
 use bigbrush\big\models\Block;
 
@@ -34,7 +35,7 @@ class Plugin extends BasePlugin
     {
         $app = Yii::$app;
         if ($app->cms->isFrontend) {
-            $app->on($app::EVENT_AFTER_REQUEST, [$this, 'process']);
+            $app->response->on(Response::EVENT_AFTER_PREPARE, [$this, 'process']);
         }
     }
 
@@ -42,11 +43,13 @@ class Plugin extends BasePlugin
      * Processes content created with the [[Editor]] by replacing block
      * include statements with block content.
      *
+     * Note that this method runs after Big has handled dynamic content.
+     *
      * @param yii\base\Event $event the event being triggered.
      */
     public function process($event)
     {
-        $data = Yii::$app->getResponse()->data;
+        $data = Yii::$app->getResponse()->content;
 
         // simple performance check to determine whether further processing is required
         if (strpos($data, 'block') === false) {
@@ -88,7 +91,17 @@ class Plugin extends BasePlugin
             }
         }
 
+        // this plugin needs to parse the urls because Big only handles the Response::FORMAT_HTML format while this plugin supports
+        // all response formats.
+        // Further more Big runs before this plugin is called
+        // Urls are parsed so blocks with links and images are displayed properly
+        $parser = Yii::$app->big->getParser();
+        $parser->data = $data;
+        $parser->parseUrls();
+        $data = $parser->data;
+        $parser->clear();
+
         // reassign the response data
-        Yii::$app->getResponse()->data = $data;
+        Yii::$app->getResponse()->content = $data;
     }
 }
