@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.3 November 24, 2016
+------------------
+- Enh: AdminMenu handles the icon properly because root menus does not set one.
+
+
 1.0.2 November 24, 2016
 ------------------
 - Bug#40: Plugins now handles all response types because it reacts to Response::EVENT_AFTER_PREPARE
