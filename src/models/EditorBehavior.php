@@ -141,7 +141,8 @@ class EditorBehavior extends Behavior
 
         if ($this->purifyContent) {
             $content = HtmlPurifier::process($content, [
-                'Attr.EnableID' => true, // needs to be set because the <hr> uses the id attribute
+                'Attr.EnableID' => true, // allows the id attribute - used by the pagebreak <hr>
+                'Attr.AllowedFrameTargets' => ['_blank'], // allows target="_blank" on links
             ]);
         }
 
