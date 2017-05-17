@@ -26,7 +26,7 @@ class Cms extends Object implements BootstrapInterface
     /**
      * version
      */
-    const VERSION = '1.0.3';
+    const VERSION = '1.0.4';
 
     /**
      * @var string the application scope.

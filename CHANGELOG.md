@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.4 May 15, 2017
+------------------
+- Enh: Target attribute allowed on HTML elements.
+
+
 1.0.3 November 24, 2016
 ------------------
 - Enh: AdminMenu handles the icon properly because root menus does not set one.
