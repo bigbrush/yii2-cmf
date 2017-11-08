@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.5 November 08, 2017
+------------------
+- Enh: BigCms now compatible with AdminLte 2.4.
+
+
 1.0.4 May 15, 2017
 ------------------
 - Enh: Target attribute allowed on HTML elements.
