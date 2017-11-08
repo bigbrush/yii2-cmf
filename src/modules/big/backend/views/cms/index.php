@@ -38,7 +38,7 @@ $boxContent .= Html::a('<i class="fa fa-eye"></i> ' . Yii::t('cms', 'See all'), 
 $this->title = Yii::t('cms', 'Welcome to Big CMS');
 
 $this->registerJs('
-    $(".box").activateBox();
+    $(".box").boxWidget();
 ');
 ?>
 <div class="row">

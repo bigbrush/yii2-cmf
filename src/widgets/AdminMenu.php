@@ -31,7 +31,7 @@ class AdminMenu extends Menu
         $this->encodeLabels = false;
         $this->activateParents = true;
         $this->submenuTemplate = "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n";
-        $this->options = ['class' => 'sidebar-menu'];
+        $this->options = ['class' => 'sidebar-menu', 'data' => ['widget' => 'tree']];
     }
 
     /**
@@ -62,15 +62,18 @@ class AdminMenu extends Menu
     {
         $items = [];
         while (list($id, $menu) = each($menus)) {
-            $items[$id] = [
+            $item = [
                 'label' => $menu->title,
                 'url' => [$menu->route],
                 'icon' => $menu->params['icon'],
                 'visible' => $menu->getIsEnabled(),
             ];
             if ($menu->rgt - $menu->lft != 1) {
-                $items[$id]['items'] = $this->createDropDownMenu($menus);
+                $item['options'] = ['class' => 'treeview']; // https://adminlte.io/docs/2.4/upgrade-guide
+                $item['items'] = $this->createDropDownMenu($menus);
             }
+            $items[$id] = $item;
+
             $next = key($menus);
             if ($next && $menus[$next]->depth != $menu->depth) {
                 return $items;
