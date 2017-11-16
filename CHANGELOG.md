@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.6 November 16, 2017
+------------------
+- Bug: UrlRule of pages module now handles url suffixes correctly.
+
+
 1.0.5 November 08, 2017
 ------------------
 - Enh: BigCms now compatible with AdminLte 2.4.
