@@ -86,8 +86,8 @@ class UrlRule extends Object implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        $suffix = Yii::$app->getUrlManager()->suffix;
-        if ($suffix !== null) {
+        $suffix = (string) Yii::$app->getUrlManager()->suffix;
+        if ($suffix !== '') {
             $pathInfo = substr($pathInfo, 0, -strlen($suffix));
         }
         // this url rule will always have minimum 2 url path segments (separated by a "/")
