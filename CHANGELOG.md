@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.7 June 6, 2018
+------------------
+- Bug: Slug (alias) in Page model (page module) is now immutable.
+
+
 1.0.6 November 16, 2017
 ------------------
 - Bug: UrlRule of pages module now handles url suffixes correctly.
