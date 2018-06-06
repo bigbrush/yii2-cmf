@@ -257,6 +257,7 @@ class Page extends ActiveRecord
                 'attribute' => ['title', 'alias'],
                 'slugAttribute' => 'alias',
                 'ensureUnique' => true,
+                'immutable' => true,
             ],
             [
                 'class' => EditorBehavior::className(),
