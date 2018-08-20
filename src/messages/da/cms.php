@@ -153,6 +153,7 @@ return [
     'Pages' => 'Sider',
     'Pages categories' => 'Side kategorier',
     'Pages pr row' => 'Sider pr. række',
+    'Pages shown' => 'Antal sider',
     'Password' => 'Adgangskode',
     'Password reset token cannot be blank.' => 'Token til adgangskode må ikke være tom.',
     'Password was reset successfully.' => 'Adgangskoden blev nulstillet.',

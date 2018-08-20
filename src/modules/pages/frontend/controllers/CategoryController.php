@@ -8,6 +8,7 @@
 namespace bigbrush\cms\modules\pages\frontend\controllers;
 
 use Yii;
+use yii\data\Pagination;
 use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
@@ -36,10 +37,22 @@ class CategoryController extends Controller
         if (isset($params['sort_by'])) {
             $sortBy = $params['sort_by'] . ' ' . $params['sort_direction'];
         }
-        $pages = Page::find()->with(['author', 'editor'])
-            ->byCategory($catid)
-            ->byState(Page::STATE_ACTIVE)
+        $pagesShown = null;
+        if (isset($params['pages_shown']) && !empty($params['pages_shown'])) {
+            $pagesShown = $params['pages_shown'];
+        }
+
+        $query = Page::find()->byState(Page::STATE_ACTIVE)->byCategory($catid);
+        $countQuery = clone $query;
+        $pagination = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => $pagesShown,
+            'route' => Yii::$app->big->menuManager->active->alias,
+        ]);
+        $pages = $query->offset($pagination->offset)
             ->orderBy($sortBy)
+            ->limit($pagination->limit)
+            ->with(['author', 'editor'])
             ->asArray()
             ->all();
         foreach ($pages as &$page) {
@@ -48,6 +61,7 @@ class CategoryController extends Controller
         return $this->render('pages', [
             'category' => $category,
             'pages' => $pages,
+            'pagination' => $pagination,
         ]);
     }
 }

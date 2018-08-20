@@ -37,6 +37,9 @@ $categoryTypes = [
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3">
+                        <?= $form->field($model, 'params[pages_shown]')->label(Yii::t('cms', 'Pages shown')) ?>
+                    </div>
+                    <div class="col-md-3">
                         <?= $form->field($model, 'params[pages_pr_row]')->dropDownList([
                             1 => 1,
                             2 => 2,
@@ -58,6 +61,8 @@ $categoryTypes = [
                             1 => Yii::t('cms', 'Yes'),
                         ])->label(Yii::t('cms', 'Show intro content')) ?>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <?= $form->field($model, 'params[show_page_dates]')->dropDownList([
                             0 => Yii::t('cms', 'No'),
@@ -65,8 +70,6 @@ $categoryTypes = [
                             'updated_at' => Yii::t('cms', 'Updated'),
                         ])->label(Yii::t('cms', 'Show date')) ?>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <?= $form->field($model, 'params[show_page_editor_author]')->dropDownList([
                             0 => Yii::t('cms', 'No'),
