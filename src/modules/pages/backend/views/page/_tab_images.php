@@ -10,6 +10,14 @@ use bigbrush\big\widgets\filemanager\FileManager;
 use bigbrush\big\widgets\bigsearch\BigSearch;
 use bigbrush\cms\modules\pages\widgets\Gallery;
 
+$fileManager = new FileManager([
+    'onClickCallback' => 'function(file){
+        $("#image-modal").on("hidden.bs.modal", function(){
+            $("#" + curImage).val(file.url);
+        }).modal("hide");
+    }'
+]);
+
 // prevent form submission when modal buttons are clicked
 $this->registerJs('
     $(".image-modal-btn").click(function(e){
@@ -32,12 +40,8 @@ $this->registerJs('
         });
     });
 
-    // handles elfinder overlapping the modal
     $("#image-modal").on("show.bs.modal", function () {
-        var elfinderH = $("#elfinder").height();
-        $(this).find(".modal-body").css({
-            "min-height": (elfinderH + 100) + "px"
-        });
+        $("#elfinder").elfinder('. $fileManager->getJsOptions() .');
     });
 ');
 
@@ -177,13 +181,7 @@ Modal::begin([
     'size' => Modal::SIZE_LARGE,
 ]); ?>
 
-<?= FileManager::widget([
-    'onClickCallback' => 'function(file){
-        $("#image-modal").on("hidden.bs.modal", function(){
-            $("#" + curImage).val(file.url);
-        }).modal("hide");
-    }'
-]); ?>
+<div id="elfinder"></div>
 
 <?php Modal::end(); ?>
 
