@@ -31,6 +31,14 @@ $this->registerJs('
             $("#url-modal").modal();
         });
     });
+
+    // handles elfinder overlapping the modal
+    $("#image-modal").on("show.bs.modal", function () {
+        var elfinderH = $("#elfinder").height();
+        $(this).find(".modal-body").css({
+            "min-height": (elfinderH + 100) + "px"
+        });
+    });
 ');
 
 $panels = [];
