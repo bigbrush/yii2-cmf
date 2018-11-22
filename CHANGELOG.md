@@ -1,9 +1,14 @@
 CMF Change Log
 ==========================
 
+1.0.9 November 22, 2018
+------------------
+- Enh: Pages Module: The FileManager widget now loads all media files when used in a modal.
+
+
 1.0.8 November 22, 2018
 ------------------
-- Enh: Pages Module: Elfinder no longer extends past the modal area.
+- Enh: Pages Module: The FileManager widget no longer extends past the modal area.
 
 
 1.0.7 June 6, 2018
