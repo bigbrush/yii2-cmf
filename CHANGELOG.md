@@ -1,6 +1,11 @@
 CMF Change Log
 ==========================
 
+1.0.8 November 22, 2018
+------------------
+- Enh: Pages Module: Elfinder no longer extends past the modal area.
+
+
 1.0.7 June 6, 2018
 ------------------
 - Bug: Slug (alias) in Page model (page module) is now immutable.
