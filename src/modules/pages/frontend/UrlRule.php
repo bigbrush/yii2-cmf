@@ -8,7 +8,7 @@
 namespace bigbrush\cms\modules\pages\frontend;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\web\UrlRuleInterface;
 use bigbrush\cms\modules\pages\components\Route;
 
@@ -24,7 +24,7 @@ use bigbrush\cms\modules\pages\components\Route;
  * the identifier would be the page id ("33"). This could be extracted without taking the suffix into consideration. Make
  * this distinction when creating url rules.
  */
-class UrlRule extends Object implements UrlRuleInterface
+class UrlRule extends BaseObject implements UrlRuleInterface
 {
     /**
      * @var string defines the id of this url rule. Rules needs
@@ -42,7 +42,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Creates a URL according to the given route and parameters.
-     * 
+     *
      * @param UrlManager $manager the URL manager
      * @param string $route the route. It should not have slashes at the beginning or the end.
      * @param array $params the parameters
@@ -77,7 +77,7 @@ class UrlRule extends Object implements UrlRuleInterface
 
     /**
      * Parses the given request and returns the corresponding route and parameters.
-     * 
+     *
      * @param UrlManager $manager the URL manager
      * @param Request $request the request component
      * @return array|boolean the parsing result. The route and the parameters are returned as an array.
@@ -95,7 +95,7 @@ class UrlRule extends Object implements UrlRuleInterface
             // split the current path into segments
             $segments = explode('/', $pathInfo);
             $identifier = false;
-            
+
             // if the first segment matches the id of this url rule we have a match.
             // in this case we also know that no menu points directly to the requested page (otherwise this url rule would never get activated)
             // use the second segment

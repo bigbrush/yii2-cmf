@@ -58,29 +58,31 @@ class AdminMenu extends Menu
      * @param array list of menus to nest in an array.
      * @return array nested array ready for a drop down menu.
      */
-    public function createDropDownMenu(&$menus)
-    {
-        $items = [];
-        while (list($id, $menu) = each($menus)) {
-            $item = [
-                'label' => $menu->title,
-                'url' => [$menu->route],
-                'icon' => $menu->params['icon'],
-                'visible' => $menu->getIsEnabled(),
-            ];
-            if ($menu->rgt - $menu->lft != 1) {
-                $item['options'] = ['class' => 'treeview']; // https://adminlte.io/docs/2.4/upgrade-guide
-                $item['items'] = $this->createDropDownMenu($menus);
-            }
-            $items[$id] = $item;
+     public function createDropDownMenu(&$menus)
+     {
+         $items = [];
+         while ($menu = current($menus)) {
+             $item = [
+                 'label' => $menu->title,
+                 'url' => [$menu->route],
+                 'icon' => $menu->params['icon'],
+                 'visible' => $menu->getIsEnabled(),
+             ];
 
-            $next = key($menus);
-            if ($next && $menus[$next]->depth != $menu->depth) {
-                return $items;
-            }
-        }
-        return $items;
-    }
+             $id = key($menus);
+             $next = next($menus);
+
+             if ($menu->rgt - $menu->lft != 1) {
+                 $item['options'] = ['class' => 'treeview']; // https://adminlte.io/docs/2.4/upgrade-guide
+                 $item['items'] = $this->createDropDownMenu($menus);
+             }
+             $items[$id] = $item;
+             if ($next && $next->depth < $menu->depth) {
+                 return $items;
+             }
+         }
+         return $items;
+     }
 
     /**
      * Adds icons to labels of the provided items.
@@ -130,7 +132,7 @@ class AdminMenu extends Menu
         }
         return false;
     }
-    
+
     /**
      * Remebers whether the admin menu is collapsed.
      * The selection is saved in the current session.
@@ -141,7 +143,7 @@ class AdminMenu extends Menu
     {
         Yii::$app->getSession()->set(static::SESSION_VAR_COLLAPSED, $collapsed);
     }
-    
+
     /**
      * Returns a boolean indicating whether the admin menu is collapsed.
      *
