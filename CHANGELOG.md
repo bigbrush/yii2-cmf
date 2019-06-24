@@ -1,6 +1,12 @@
 CMF Change Log
 ==========================
 
+1.0.10 June 24, 2019
+------------------
+- Enh: Support of PHP 7.2
+- Bug: DeleteButton widget fixed
+
+
 1.0.9 November 22, 2018
 ------------------
 - Enh: Pages Module: The FileManager widget now loads all media files when used in a modal.
