@@ -8,7 +8,7 @@
 namespace bigbrush\cms;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\base\BootstrapInterface;
 use yii\helpers\Url;
 use bigbrush\cms\components\UrlManagerBehavior;
@@ -16,7 +16,7 @@ use bigbrush\cms\components\UrlManagerBehavior;
 /**
  * Cms
  */
-class Cms extends Object implements BootstrapInterface
+class Cms extends BaseObject implements BootstrapInterface
 {
     /**
      * scopes
@@ -47,7 +47,7 @@ class Cms extends Object implements BootstrapInterface
      * @param yii\base\Application $app the application currently running.
      */
     public function bootstrap($app)
-    {        
+    {
         // register a default scope if not set
         if ($this->_scope === null) {
             $this->setScope(static::SCOPE_FRONTEND);

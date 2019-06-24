@@ -8,14 +8,14 @@
 namespace bigbrush\cms\components;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
  * Toolbar
  */
-class Toolbar extends Object
+class Toolbar extends BaseObject
 {
     const POST_VAR_SAVE_STAY = 'saveAndStay';
 
@@ -27,9 +27,9 @@ class Toolbar extends Object
 
     /**
      * Adds a save button to the toolbar.
-     * 
+     *
      * This method MUST be called within a form as it renders a hidden form field. The
-     * hidden field is used to save the form with a submit button outside the form. 
+     * hidden field is used to save the form with a submit button outside the form.
      *
      * The technique used to submit a form with a button outside the form is
      * described (on Stackoverflow)[http://stackoverflow.com/a/23456905].
@@ -52,9 +52,9 @@ class Toolbar extends Object
     /**
      * Adds a save button. When clicked the form will be submitted with the $_POST value
      * of "saveAndStay". Use [[stayAfterSave()]] to redirect appropriately in a controller.
-     * 
+     *
      * This method MUST be called within a form as it renders a hidden form field. The
-     * hidden field is used to save the form with a submit button outside the form. 
+     * hidden field is used to save the form with a submit button outside the form.
      *
      * @param string $text a text for the button.
      * @param string $icon name of an icon type to use
