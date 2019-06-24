@@ -23,12 +23,12 @@ use yii\helpers\Html;
  *     'model' => $model,
  * ]);
  * ```
- * 
+ *
  * The `model` property can be a item returned from a Big manager - for instance [[\bigbrush\big\core\MenuManager]].
  *
  * @see http://getbootstrap.com/javascript/#popovers
  */
-class DeleteButton extends PopoverButton
+class DeleteButton extends \yii\base\Widget
 {
     /**
      * @var array|ActiveRecord a model used to render a hidden form field within a form.
@@ -43,17 +43,13 @@ class DeleteButton extends PopoverButton
      */
     public $label = '<i class="fa fa-trash"></i>';
     /**
-     * @var string whether the label should be HTML-encoded. Overridden from parent impementation to set a different default value.
+     * @var array $options an array of widget options.
      */
-    public $encodeLabel = false;
+    public $options;
     /**
-     * @var string defines the button class.
+     * @var string $content content for the confirm dialog.
      */
-    public $buttonClass = 'btn-default';
-    /**
-     * @var string the text for the popover button.
-     */
-    public $btnText = '<i class="fa fa-check"></i>';
+    public $content;
 
 
     /**
@@ -61,19 +57,17 @@ class DeleteButton extends PopoverButton
      */
     public function init()
     {
-        if ($this->model === null && $this->action === null && $this->content === null) {
+        parent::init();
+
+        if ($this->model === null && $this->action === null) {
             throw new InvalidConfigException("The 'model' property must be set in bigbrush\cms\widgets\DeleteButton.");
         }
 
-        parent::init();
-        $this->useHtml = true;
-        Html::addCssClass($this->options, $this->buttonClass);
-
-        if ($this->title === null) {
-            $this->title = '<strong>' . Yii::t('cms', 'Sure?') . '</strong>';
-        }
         if ($this->action === null) {
             $this->action = ['delete', 'id' => $this->model['id']];
+        }
+        if ($this->content === null) {
+            $this->content = Yii::t('cms', 'Are you sure?');
         }
     }
 
@@ -81,20 +75,16 @@ class DeleteButton extends PopoverButton
      * Runs the widget.
      */
     public function run()
-    {        
-        $popover = '';
-        $popover .= Html::beginForm($this->action);
-        if ($this->content) {
-            $popover .= $this->content;
-        }
-        $popover .= Html::submitButton($this->btnText, [
-            'class' => 'btn btn-success',
+    {
+        return Html::a($this->label, $this->action, [
+            'class' => 'btn btn-default btn-xs',
+            'data' => [
+                'method' => 'POST',
+                'confirm' => $this->content,
+                'params' => [
+                    'id' => $this->model['id'],
+                ],
+            ],
         ]);
-        $popover .= Html::hiddenInput('id', $this->model['id']);
-        $popover .= Html::endForm();
-        
-        $this->content = $popover;
-
-        return parent::run();
     }
 }

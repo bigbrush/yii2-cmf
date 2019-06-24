@@ -61,8 +61,8 @@ $this->title = Yii::t('cms', 'Extensions');
                         'contentOptions' => ['style' => 'text-align:center; vertical-align:middle;'],
                         'value' => function($data) {
                             $popover = [];
-                            $popover[] = '<p>' . Yii::t('cms', 'Are you sure to delete this extension?') . '</p>';
-                            $popover[] = '<p><strong>' . Yii::t('cms', 'All related {type} are removed as well!', ['type' => Yii::t('cms', 'blocks')]) . '</strong></p>';
+                            $popover[] = Yii::t('cms', 'Are you sure to delete this extension?');
+                            $popover[] = Yii::t('cms', 'All related {type} are removed as well!', ['type' => Yii::t('cms', 'blocks')]);
                             return DeleteButton::widget([
                                 'model' => $data,
                                 'options' => ['class' => 'btn-xs'],

@@ -61,7 +61,7 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
                     'format' => 'raw',
                     'value' => function ($data) {
                         $icon = '<i class="fa fa-save"></i>';
-                        
+
                         $html = Html::beginForm(['update', 'id' => $data['id'], 'section' => $data['section']]);
                         $html .= '<div class="input-group">';
                         $html .= '<span class="input-group-btn">';
@@ -81,13 +81,8 @@ $this->title = Yii::t('cms', '{module} configurations', ['module' => ucfirst($co
                     'options' => ['style' => 'width: 5%;'],
                     'format' => 'raw',
                     'value' => function ($data) {
-                        $fields = [];
-                        $fields[] = Html::hiddenInput('Config[id]', $data['id']);
-                        $fields[] = Html::hiddenInput('Config[value]', $data['value']);
-                        $fields[] = Html::hiddenInput('Config[section]', $data['section']);
                         return DeleteButton::widget([
                             'action' => ['delete', 'id' => $data['id'], 'section' => $data['section']],
-                            'content' => implode("\n", $fields),
                             'options' => [
                                 'class' => 'btn btn-default btn-sm',
                             ]
