@@ -43,8 +43,6 @@ $this->title = Yii::t('cms', 'Menus');
                             return DeleteButton::widget([
                                 'model' => $data,
                                 'options' => ['class' => 'btn-xs'],
-                                'title' => '<div style="text-align: center;"><strong>' . Yii::t('cms', 'Are you sure?')  . '</strong></div>',
-                                'content' => implode("\n", $popover),
                             ]);
                         },
                     ],
