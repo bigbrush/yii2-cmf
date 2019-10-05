@@ -9,7 +9,7 @@ echo "<?php\n";
 ?>
 /**
  * This file is generated automatically with the install console command.
- * 
+ *
  * @link http://www.bigbrush-agency.com/
  * @copyright Copyright (c) 2015 Big Brush Agency ApS
  * @license http://www.bigbrush-agency.com/license/
@@ -30,6 +30,7 @@ $config = [
     'components' => [
         'cms' => [
             'class' => 'bigbrush\cms\Cms',
+            'activatePlugins' => true,
         ],
         'big' => [
             'class' => 'bigbrush\big\core\Big',

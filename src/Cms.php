@@ -26,7 +26,12 @@ class Cms extends BaseObject implements BootstrapInterface
     /**
      * version
      */
-    const VERSION = '1.0.11';
+    const VERSION = '1.0.12';
+
+    /**
+     * @var boolean $activatePlugins defines whether to activate the plugin system in the CMS.
+     */
+    public $activatePlugins = true;
 
     /**
      * @var string the application scope.
@@ -74,13 +79,14 @@ class Cms extends BaseObject implements BootstrapInterface
             ]);
         }
 
-        // set a default folder for plugins in the Cms
-        Yii::$container->set('bigbrush\big\core\PluginManager', [
-            'pluginsFolder' => '@bigbrush/cms/plugins',
-        ]);
-
-        // activate system plugins
-        $app->big->pluginManager->activateGroup('system');
+        if ($this->activatePlugins) {
+            // set a default folder for plugins in the Cms
+            Yii::$container->set('bigbrush\big\core\PluginManager', [
+                'pluginsFolder' => '@bigbrush/cms/plugins',
+            ]);
+            // activate system plugins
+            $app->big->pluginManager->activateGroup('system');
+        }
     }
 
     /**
