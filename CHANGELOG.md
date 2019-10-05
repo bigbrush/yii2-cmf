@@ -1,6 +1,10 @@
 CMF Change Log
 ==========================
 
+1.0.12 October 5, 2019
+- Enh: Added option to disable the plugin system.
+
+
 1.0.11 October 5, 2019
 - Enh: Fixed deletion of menus
 
