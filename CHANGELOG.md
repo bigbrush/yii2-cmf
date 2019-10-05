@@ -1,6 +1,10 @@
 CMF Change Log
 ==========================
 
+1.0.11 October 5, 2019
+- Enh: Fixed deletion of menus
+
+
 1.0.10 June 24, 2019
 ------------------
 - Enh: Support of PHP 7.2
