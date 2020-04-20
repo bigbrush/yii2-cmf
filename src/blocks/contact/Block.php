@@ -9,6 +9,7 @@ namespace bigbrush\cms\blocks\contact;
 
 use Yii;
 use yii\helpers\Url;
+use yii\helpers\Json;
 use bigbrush\cms\blocks\contact\components\ModelBehavior;
 use bigbrush\cms\blocks\contact\models\ContactForm;
 
@@ -78,7 +79,7 @@ class Block extends \bigbrush\big\core\Block
     /**
      * This method gets called right before a block model is saved. The model is validated at this point.
      * In this method any Block specific logic should run. For example saving a block specific model.
-     * 
+     *
      * @param bigbrush\big\models\Block the model being saved.
      * @return boolean whether the current save procedure should proceed. If any block.
      * specific logic fails false should be returned - i.e. return $blockSpecificModel->save();
@@ -106,8 +107,11 @@ class Block extends \bigbrush\big\core\Block
             'model' => $model,
             'site' => $site,
         ]);
+
+        $params = Json::decode($this->model->content);
+        $fromEmail = empty($params['receiver']) ? 'noreply@noreply.com' : $params['receiver'];
         return Yii::$app->mailer->compose()
-            ->setFrom(empty($model->email) ? 'noreply@noreply.com' : $model->email)
+            ->setFrom($fromEmail)
             ->setTo($this->model->receiver)
             ->setSubject(Yii::t('cms', 'Contact from {site}', ['site' => $site]))
             ->setTextBody($textBody)
