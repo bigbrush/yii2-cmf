@@ -1,6 +1,10 @@
 CMF Change Log
 ==========================
 
+1.0.13 November 6, 2020
+- Bug: Replaced use of Object with BaseObject.
+
+
 1.0.12 October 5, 2019
 - Enh: Added option to disable the plugin system.
 
