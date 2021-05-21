@@ -23,6 +23,10 @@ $config = [
         'big',
         'cms',
     ],
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
     'modules' => [
         'big' => ['class' => 'bigbrush\cms\modules\big\frontend\Module'],
         'pages' => ['class' => 'bigbrush\cms\modules\pages\frontend\Module'],

@@ -9,7 +9,7 @@ echo "<?php\n";
 ?>
 /**
  * This file is generated automatically with the install console command.
- * 
+ *
  * @link http://www.bigbrush-agency.com/
  * @copyright Copyright (c) 2015 Big Brush Agency ApS
  * @license http://www.bigbrush-agency.com/license/
@@ -23,6 +23,10 @@ $config = [
     'bootstrap' => [
         'big',
         'cms',
+    ],
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
     ],
     'modules' => [
         'big' => ['class' => 'bigbrush\cms\modules\big\backend\Module'],
